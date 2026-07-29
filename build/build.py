@@ -15,12 +15,57 @@ Build the deliverables from the single-source-of-truth item bank (items.py):
 
 import json
 import os
+import hashlib
+import random
+import statistics
 from collections import defaultdict, OrderedDict
 
 from items import ITEMS, STANDARDS, ELEMENTS, SEGMENTS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LETTERS = ["A", "B", "C", "D"]
+
+
+# ------------------------------------------------------------------ shuffle
+def _seed(s):
+    """Stable (PYTHONHASHSEED-independent) integer seed from a string."""
+    return int(hashlib.md5(s.encode()).hexdigest()[:8], 16)
+
+
+def shuffle_options(items):
+    """Deterministically reorder each item's options so the correct answer is
+    spread evenly across A/B/C/D (kills the 'always B' positional tell), and the
+    distractor order is scrambled too. answer + diagnoses indices are remapped."""
+    # Balanced, deterministically-shuffled target positions for the key, per form.
+    targets = {}
+    for form in ("A", "B"):
+        fids = [it["id"] for it in items if it["form"] == form]
+        n = len(fids)
+        cycle = ([0, 1, 2, 3] * ((n + 3) // 4))[:n]
+        random.Random(_seed("pos-" + form)).shuffle(cycle)
+        for k, fid in enumerate(fids):
+            targets[fid] = cycle[k]
+    out = []
+    for it in items:
+        tgt = targets[it["id"]]
+        correct = it["options"][it["answer"]]
+        distractors = [(oi, it["options"][oi]) for oi in range(4) if oi != it["answer"]]
+        random.Random(_seed("opt-" + it["id"])).shuffle(distractors)
+        newopts = [None] * 4
+        remap = {it["answer"]: tgt}
+        newopts[tgt] = correct
+        for slot, (oi, txt) in zip([p for p in range(4) if p != tgt], distractors):
+            newopts[slot] = txt
+            remap[oi] = slot
+        nit = dict(it)
+        nit["options"] = newopts
+        nit["answer"] = tgt
+        nit["diagnoses"] = {remap[int(k)]: v for k, v in it["diagnoses"].items()}
+        out.append(nit)
+    return out
+
+
+ITEMS = shuffle_options(ITEMS)
 
 # ------------------------------------------------------------------ validate
 def validate():
@@ -47,6 +92,24 @@ def validate():
     assert na == nb, "form length mismatch %d/%d" % (na, nb)
     print("validated: %d items | Form A (pre)=%d | Form B (post)=%d | %d elements"
           % (len(ITEMS), na, nb, len(counts)))
+
+    # --- answer-key quality checks (guard against positional & length tells) ---
+    for form in ("A", "B"):
+        fi = [i for i in ITEMS if i["form"] == form]
+        pos = defaultdict(int)
+        for i in fi:
+            pos[i["answer"]] += 1
+        spread = {LETTERS[k]: pos.get(k, 0) for k in range(4)}
+        # each key position should appear a balanced number of times
+        assert max(spread.values()) - min(spread.values()) <= 1, \
+            "Form %s answer positions unbalanced: %s" % (form, spread)
+        # correct answer should not systematically be the longest option
+        longest = sum(1 for i in fi
+                      if len(i["options"][i["answer"]]) == max(len(o) for o in i["options"])
+                      and [len(o) for o in i["options"]].count(max(len(o) for o in i["options"])) == 1)
+        rate = longest / len(fi)
+        assert rate <= 0.40, "Form %s: correct answer is the unique longest in %.0f%% of items" % (form, rate * 100)
+        print("  Form %s key positions %s | correct-is-longest %.0f%%" % (form, spread, rate * 100))
     return na
 
 FORM_LEN = validate()
