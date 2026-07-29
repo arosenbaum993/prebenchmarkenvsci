@@ -26,6 +26,8 @@ the test is available at:
 | **`index.html`** | Same as `assessment.html`; lets the GitHub Pages / host site root open the test directly. |
 | **`assessment.html`** | The complete, self-contained online test. Open in any browser or upload to Google Sites / an LMS. Auto-scores, shows a per-standard diagnostic report, exports results, and includes teacher tools (answer key + **class data analyzer**). No internet, accounts, or plugins required. |
 | **`TEACHER_GUIDE.md`** | Answer key, standards/element alignment, mastery bands, the full **misconception map**, and how to turn pre-test data into a semester plan and reteaching groups. |
+| **`GOOGLE_SHEET_SETUP.md`** | Step-by-step setup for **automatic** result collection into your own Google Sheet (no result codes). |
+| **`apps_script/Code.gs`** | The Google Apps Script that receives results and writes them to your Sheet. |
 | **`ITEM_BANK.md`** | Clean printable copy of both forms (for paper use or importing into Google Forms). |
 | **`data/items.json`** | Machine-readable item bank. |
 | **`build/items.py`** | **Single source of truth** — all 80 items with alignment + misconception keys. |
@@ -33,11 +35,18 @@ the test is available at:
 
 ## Using it with a class
 
+**Automatic (recommended) — results flow into your Google Sheet:**
+1. Do the one-time setup in [`GOOGLE_SHEET_SETUP.md`](GOOGLE_SHEET_SETUP.md) (~5 min), or **Teacher tools → Set up automatic collection** inside the test.
+2. Share the generated **student link** in Google Classroom (Form A for the pre-test, Form B for the post-test).
+3. Students take the test; every submission logs to your Sheet automatically — no codes.
+4. Open **Teacher tools → Class data analyzer → Load class data from Google Sheet** for the heatmap, reteaching groups, item analysis, and misconception frequencies.
+
+**No-setup fallback — result codes:**
 1. Assign **Form A** (pre-test) in Week 1. Students enter their name/class and answer online.
 2. Each student gets a short **result code** (`ENV-…`). Collect the codes (LMS, a form, or a shared doc).
-3. Open **Teacher tools → Class data analyzer**, paste the codes, and get a class heatmap,
-   ready-made reteaching groups, item analysis, and misconception frequencies.
-4. At semester end, assign **Form B** and compare the same element subscores to show growth.
+3. Open **Teacher tools → Class data analyzer**, paste the codes, and get the same class report.
+
+At semester end, assign **Form B** and compare the same element subscores to show growth.
 
 **Mastery bands:** Secure ≥ 80% · Developing 50–79% · Beginning < 50%.
 

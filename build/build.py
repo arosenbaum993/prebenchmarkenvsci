@@ -133,6 +133,15 @@ JS_DATA = json.dumps({
     } for i in ITEMS],
 }, ensure_ascii=False)
 
+# Apps Script source, injected so the in-app setup panel can show + copy it.
+with open(os.path.join(ROOT, "apps_script", "Code.gs"), encoding="utf-8") as f:
+    APPS_SCRIPT_JS = json.dumps(f.read())
+
+# Optional: a hard-coded collection endpoint baked into the build. Leave empty —
+# teachers set their endpoint in-app (stored per device) and share a student link
+# that carries it as a ?endpoint= parameter, so no rebuild is needed.
+CONFIG_ENDPOINT_JS = json.dumps("")
+
 # ------------------------------------------------------------------ HTML inner
 STYLE = r"""
 <style>
@@ -393,12 +402,13 @@ BODY = r"""
         <h3>Teacher tools</h3>
         <p>Review every answer and its standard alignment, or paste your students' result codes to build a class picture and instructional groups.</p>
         <div class="btnrow" style="flex-direction:column">
-          <button class="btn ghost" id="keyBtn" type="button" style="width:100%">Answer key &amp; alignment</button>
+          <button class="btn ghost" id="setupBtn" type="button" style="width:100%">Set up automatic collection</button>
           <button class="btn ghost" id="analyzeBtn" type="button" style="width:100%">Class data analyzer</button>
+          <button class="btn ghost" id="keyBtn" type="button" style="width:100%">Answer key &amp; alignment</button>
         </div>
-        <div class="note" style="margin-top:16px">Robust data, no login: after each student finishes, they get a short
-        <b>result code</b>. Collect the codes (LMS, form, or shared doc) and paste them into the analyzer for a
-        class heatmap, item analysis, and ready-made reteaching groups.</div>
+        <div class="note" style="margin-top:16px">Connect your Google Sheet once and student results log <b>automatically</b>
+        &mdash; no codes to copy. Prefer no setup? Skip it: students still get a <b>result code</b> you can paste into the
+        analyzer for the same class heatmap.</div>
       </div>
     </div>
   </section>
@@ -427,6 +437,9 @@ BODY = r"""
   <!-- ============ ANSWER KEY ============ -->
   <section id="answerkey" class="hidden"></section>
 
+  <!-- ============ COLLECTION SETUP ============ -->
+  <section id="setup" class="hidden"></section>
+
   <!-- ============ ANALYZER ============ -->
   <section id="analyzer" class="hidden"></section>
 
@@ -442,8 +455,37 @@ BODY = r"""
 SCRIPT = r"""
 <script>
 const DATA = /*DATA*/;
+const APPS_SCRIPT = /*APPS*/;
+const CONFIG_ENDPOINT = /*CONFIG_ENDPOINT*/;
 const LET = ["A","B","C","D"];
 const STD_ORDER = ["SEV1","SEV2","SEV3","SEV4","SEV5"];
+
+/* ---------- collection endpoint (Google Sheet Web App) ---------- */
+function qparam(k){ try{return new URLSearchParams(location.search).get(k);}catch(e){return null;} }
+function getEndpoint(){
+  return (qparam("endpoint") || localStorage.getItem("env_endpoint") || CONFIG_ENDPOINT || "").trim();
+}
+function setEndpoint(url){ try{localStorage.setItem("env_endpoint",url.trim());}catch(e){} }
+function postToEndpoint(payload){
+  const url=getEndpoint(); if(!url) return Promise.resolve(false);
+  // text/plain avoids a CORS preflight; no-cors = fire-and-forget write.
+  return fetch(url,{method:"POST",mode:"no-cors",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)})
+    .then(()=>true).catch(()=>false);
+}
+let _jsonpN=0;
+function jsonpGet(url){ // used to READ the sheet back without a CORS error
+  return new Promise((resolve,reject)=>{
+    const cb="__envcb_"+(++_jsonpN);
+    const s=document.createElement("script");
+    const t=setTimeout(()=>{cleanup();reject(new Error("timeout"));},15000);
+    function cleanup(){clearTimeout(t);delete window[cb];s.remove();}
+    window[cb]=data=>{cleanup();resolve(data);};
+    s.onerror=()=>{cleanup();reject(new Error("network"));};
+    s.src=url+(url.indexOf("?")<0?"?":"&")+"action=read&callback="+cb+"&t="+Date.now();
+    document.body.appendChild(s);
+  });
+}
 const $ = s => document.querySelector(s);
 const el = (t,c,h)=>{const e=document.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
 const esc = s => String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
@@ -469,7 +511,7 @@ themeBtn.addEventListener("click",()=>{
 
 /* ---------- view switch ---------- */
 function show(id){
-  ["home","test","results","answerkey","analyzer"].forEach(v=>$("#"+v).classList.toggle("hidden",v!==id));
+  ["home","test","results","answerkey","setup","analyzer"].forEach(v=>$("#"+v).classList.toggle("hidden",v!==id));
   $("#rail").hidden = (id!=="test");
   window.scrollTo({top:0,behavior:"instant"in window?"instant":"auto"});
 }
@@ -619,14 +661,29 @@ function showResults(R){
   host.appendChild(p);
   host.appendChild(bandKey());
 
-  // result code + exports
+  // auto-submit to the teacher's Google Sheet if a collection endpoint is set
   const code=encodeResult(R);
   const exp=el("div","panel export-row");
-  exp.innerHTML='<h3>Submit your results</h3>'+
-    '<p class="muted" style="font-size:.88rem;margin:4px 0 8px">Copy this result code and turn it in the way your teacher asked (paste into the assignment, form, or shared doc). It lets your teacher build the class report.</p>'+
-    '<div class="codebox" id="codeBox">'+code+'</div>';
+  const hasEndpoint=!!getEndpoint();
+  if(hasEndpoint){
+    exp.innerHTML='<h3>Results submitted</h3>'+
+      '<p class="muted" style="font-size:.88rem;margin:4px 0 8px" id="sendStatus">Sending your results to your teacher&hellip;</p>'+
+      '<details style="margin-top:4px"><summary class="muted" style="cursor:pointer;font-size:.82rem">Backup result code (only if your teacher asks)</summary>'+
+      '<div class="codebox" id="codeBox" style="margin-top:8px">'+code+'</div></details>';
+    const payload=resultPayload(R);
+    postToEndpoint(payload).then(ok=>{
+      const s=$("#sendStatus");
+      if(s) s.innerHTML = ok
+        ? '&#10003; Your results were sent to your teacher. You can close this page.'
+        : 'We could not confirm the send. Copy the backup code below and give it to your teacher.';
+    });
+  } else {
+    exp.innerHTML='<h3>Submit your results</h3>'+
+      '<p class="muted" style="font-size:.88rem;margin:4px 0 8px">Copy this result code and turn it in the way your teacher asked (paste into the assignment, form, or shared doc). It lets your teacher build the class report.</p>'+
+      '<div class="codebox" id="codeBox">'+code+'</div>';
+  }
   const brow=el("div","btnrow"); brow.style.marginTop="12px";
-  brow.appendChild(mkBtn("Copy result code","btn sm",()=>copy(code)));
+  if(!hasEndpoint) brow.appendChild(mkBtn("Copy result code","btn sm",()=>copy(code)));
   brow.appendChild(mkBtn("Download CSV","btn ghost sm",()=>downloadCSV(R)));
   brow.appendChild(mkBtn("Print / Save PDF","btn ghost sm",()=>window.print()));
   brow.appendChild(mkBtn("Home","btn ghost sm",()=>show("home")));
@@ -681,10 +738,13 @@ let toastT; function toast(m){ let x=$("#toast"); if(!x){x=el("div");x.id="toast
   x.textContent=m; x.style.opacity="1"; clearTimeout(toastT); toastT=setTimeout(()=>x.style.opacity="0",1400); }
 
 /* ---------- encode / decode ---------- */
+function resultPayload(R){
+  const payload={v:1,f:R.form,n:R.meta.name,c:R.meta.cls,i:R.meta.id,a:{}};
+  R.perItem.forEach(p=>{payload.a[p.id]=p.blank?-1:p.sel});
+  return payload;
+}
 function encodeResult(R){
-  const payload={v:1,f:R.form,n:R.meta.name,c:R.meta.cls,i:R.meta.id,
-    a:{}}; R.perItem.forEach(p=>{payload.a[p.id]=p.blank?-1:p.sel});
-  const json=JSON.stringify(payload);
+  const json=JSON.stringify(resultPayload(R));
   return "ENV-"+btoa(unescape(encodeURIComponent(json)));
 }
 function decodeResult(code){
@@ -732,6 +792,72 @@ function renderKey(){
   show("answerkey");
 }
 
+/* ================= COLLECTION SETUP ================= */
+$("#setupBtn").addEventListener("click",renderSetup);
+function renderSetup(){
+  const host=$("#setup"); host.innerHTML="";
+  host.appendChild(el("div","report-head",
+    '<div class="eyebrow">Teacher tool</div><h2 style="font-size:1.6rem">Set up automatic collection</h2>'+
+    '<p class="muted" style="margin:6px 0 0">Connect your Google Sheet once. After that, each student’s results are logged automatically — no codes to copy — and the analyzer loads straight from your sheet.</p>'));
+
+  const steps=el("div","panel");
+  steps.innerHTML='<h3>1 &middot; Create the collector (about 5 minutes)</h3>'+
+    '<ol class="muted" style="font-size:.9rem;margin:8px 0 0;padding-left:20px;line-height:1.7">'+
+    '<li>Open a Google Sheet, then <b>Extensions &rarr; Apps Script</b>.</li>'+
+    '<li>Delete any code there, paste the script below, and click <b>Save</b>.</li>'+
+    '<li><b>Deploy &rarr; New deployment &rarr;</b> type <b>Web app</b>. Set <b>Execute as: Me</b> and <b>Who has access: Anyone</b>, then <b>Deploy</b> and authorize.</li>'+
+    '<li>Copy the <b>Web app URL</b> (it ends in <code>/exec</code>) and paste it below.</li></ol>';
+  const scr=el("div","btnrow"); scr.style.margin="12px 0 0";
+  scr.appendChild(mkBtn("Copy the script","btn sm",()=>copy(APPS_SCRIPT)));
+  steps.appendChild(scr);
+  const pre=el("div","codebox"); pre.style.maxHeight="180px"; pre.style.overflow="auto";
+  pre.style.whiteSpace="pre"; pre.textContent=APPS_SCRIPT;
+  steps.appendChild(pre);
+  host.appendChild(steps);
+
+  const conn=el("div","panel");
+  conn.innerHTML='<h3>2 &middot; Connect this test to your Sheet</h3>'+
+    '<p class="muted" style="font-size:.88rem;margin:4px 0 8px">Paste the Web app URL. It is saved on this device only.</p>';
+  const f=el("div","field");
+  f.innerHTML='<label for="epInput">Web app URL (ends in /exec)</label>';
+  const inp=el("input"); inp.id="epInput"; inp.placeholder="https://script.google.com/macros/s/.../exec";
+  inp.value=getEndpoint(); f.appendChild(inp); conn.appendChild(f);
+  const cbrow=el("div","btnrow");
+  cbrow.appendChild(mkBtn("Save & make student link","btn sm",()=>{
+    const v=$("#epInput").value.trim();
+    if(!/^https:\/\/script\.google\.com\/.*\/exec$/.test(v)){ toast("That doesn't look like a /exec Web app URL"); return; }
+    setEndpoint(v); renderSetup();
+  }));
+  cbrow.appendChild(mkBtn("Test connection","btn ghost sm",()=>{
+    const v=$("#epInput").value.trim(); if(!v){toast("Paste your URL first");return;}
+    toast("Checking…");
+    jsonpGet(v).then(d=>toast(d&&d.ok?("Connected — "+d.count+" row(s) so far"):"Connected, but no data yet"))
+      .catch(()=>toast("Could not reach the sheet — check the URL and access = Anyone"));
+  }));
+  cbrow.appendChild(mkBtn("Home","btn ghost sm",()=>show("home")));
+  conn.appendChild(cbrow); host.appendChild(conn);
+
+  const ep=getEndpoint();
+  if(ep){
+    const share=el("div","panel");
+    share.innerHTML='<h3>3 &middot; Share these links in Google Classroom</h3>'+
+      '<p class="muted" style="font-size:.88rem;margin:4px 0 10px">Each link has your Sheet built in, so submissions log automatically.</p>';
+    const base=location.origin+location.pathname;
+    [["A","Pre-Test (Form A)"],["B","Post-Test (Form B)"]].forEach(([fm,label])=>{
+      const link=base+"?endpoint="+encodeURIComponent(ep)+"&form="+fm;
+      const row=el("div"); row.style.margin="0 0 12px";
+      row.innerHTML='<div style="font-weight:600;font-size:.9rem;margin-bottom:4px">'+label+'</div>'+
+        '<div class="codebox" style="margin:0">'+esc(link)+'</div>';
+      const b=el("div","btnrow"); b.style.marginTop="6px";
+      b.appendChild(mkBtn("Copy "+label+" link","btn ghost sm",()=>copy(link)));
+      row.appendChild(b); share.appendChild(row);
+    });
+    share.appendChild(el("div","note","When results are in, open <b>Class data analyzer &rarr; Load class data from Google Sheet</b> to build the heatmap — no copy-paste."));
+    host.appendChild(share);
+  }
+  show("setup");
+}
+
 /* ================= CLASS ANALYZER ================= */
 $("#analyzeBtn").addEventListener("click",renderAnalyzer);
 function renderAnalyzer(){
@@ -743,28 +869,62 @@ function renderAnalyzer(){
   const pan=el("div","panel");
   pan.innerHTML='<h3>Paste result codes</h3><p class="muted" style="font-size:.85rem;margin:4px 0 8px">'+
     'One per line. Mix pre- and post-test codes freely &mdash; they are grouped by form.</p>';
-  const ta=el("textarea"); ta.id="codes"; ta.placeholder="ENV-...\nENV-...\nENV-...";
-  pan.appendChild(ta);
-  const brow=el("div","btnrow"); brow.style.marginTop="12px";
-  brow.appendChild(mkBtn("Build class report","btn sm",runAnalyzer));
-  brow.appendChild(mkBtn("Home","btn ghost sm",()=>show("home")));
-  pan.appendChild(brow); host.appendChild(pan);
+  if(getEndpoint()){
+    pan.innerHTML='<h3>Load class data automatically</h3>'+
+      '<p class="muted" style="font-size:.85rem;margin:4px 0 10px">Your Google Sheet is connected. Load every submission with one click &mdash; no codes to paste.</p>';
+    const arow=el("div","btnrow");
+    arow.appendChild(mkBtn("Load class data from Google Sheet","btn sm",loadFromSheet));
+    arow.appendChild(mkBtn("Set up / change sheet","btn ghost sm",renderSetup));
+    arow.appendChild(mkBtn("Home","btn ghost sm",()=>show("home")));
+    pan.appendChild(arow);
+    const det=el("details"); det.style.marginTop="14px";
+    det.innerHTML='<summary class="muted" style="cursor:pointer;font-size:.85rem">Or paste result codes manually</summary>';
+    const ta=el("textarea"); ta.id="codes"; ta.placeholder="ENV-...\nENV-..."; ta.style.marginTop="10px";
+    det.appendChild(ta);
+    const b2=el("div","btnrow"); b2.style.marginTop="10px";
+    b2.appendChild(mkBtn("Build report from codes","btn ghost sm",runAnalyzer));
+    det.appendChild(b2); pan.appendChild(det);
+  } else {
+    const ta=el("textarea"); ta.id="codes"; ta.placeholder="ENV-...\nENV-...\nENV-...";
+    pan.appendChild(ta);
+    const brow=el("div","btnrow"); brow.style.marginTop="12px";
+    brow.appendChild(mkBtn("Build class report","btn sm",runAnalyzer));
+    brow.appendChild(mkBtn("Set up automatic collection","btn ghost sm",renderSetup));
+    brow.appendChild(mkBtn("Home","btn ghost sm",()=>show("home")));
+    pan.appendChild(brow);
+  }
+  host.appendChild(pan);
   host.appendChild(el("div",null)).id="analyzerOut";
   show("analyzer");
+}
+function loadFromSheet(){
+  const out=$("#analyzerOut"); out.innerHTML="";
+  out.appendChild(el("p","muted","Loading from your Google Sheet…"));
+  jsonpGet(getEndpoint()).then(d=>{
+    if(!d||!d.ok||!d.rows){ out.innerHTML=""; out.appendChild(el("div","note","Could not read the sheet. Check that the deployment access is <b>Anyone</b>.")); return; }
+    if(!d.rows.length){ out.innerHTML=""; out.appendChild(el("div","note","No submissions in the sheet yet.")); return; }
+    renderReports(d.rows.map(r=>({f:r.f,n:r.n,c:r.c,i:r.i,a:r.a||{}})));
+  }).catch(()=>{ out.innerHTML=""; out.appendChild(el("div","note","Could not reach the sheet (network or access). Try <b>Test connection</b> in setup.")); });
 }
 function runAnalyzer(){
   const out=$("#analyzerOut"); out.innerHTML="";
   const lines=$("#codes").value.split(/\n+/).map(s=>s.trim()).filter(Boolean);
   const subs=lines.map(decodeResult).filter(Boolean);
   if(!subs.length){ out.appendChild(el("div","note","No valid result codes found. Codes start with <b>ENV-</b>.")); return; }
+  renderReports(subs);
+}
+function renderReports(subs){
+  const out=$("#analyzerOut"); out.innerHTML="";
+  let shown=0;
   ["A","B"].forEach(form=>{
     const group=subs.filter(s=>s.f===form); if(!group.length)return;
     const scored=group.map(s=>{
-      const ans={}; Object.keys(s.a).forEach(k=>{ if(s.a[k]>=0) ans[k]=s.a[k]; });
+      const ans={}; Object.keys(s.a||{}).forEach(k=>{ if(s.a[k]>=0) ans[k]=s.a[k]; });
       return score(form,ans,{name:s.n,cls:s.c,id:s.i});
     });
-    out.appendChild(analyzerBlock(form,scored));
+    out.appendChild(analyzerBlock(form,scored)); shown++;
   });
+  if(!shown) out.appendChild(el("div","note","No pre- or post-test submissions found in the data."));
 }
 function analyzerBlock(form,scored){
   const wrap=el("div");
@@ -850,11 +1010,19 @@ function analyzerBlock(form,scored){
 }
 
 /* boot */
+(function(){
+  const f=qparam("form");
+  if(f==="A"||f==="B"){ const r=document.querySelector('input[name="form"][value="'+f+'"]'); if(r)r.checked=true; }
+})();
 show("home");
 </script>
 """
 
-INNER = STYLE + BODY + SCRIPT.replace("/*DATA*/", JS_DATA)
+SCRIPT_FILLED = (SCRIPT.replace("/*DATA*/", JS_DATA)
+                       .replace("/*APPS*/", APPS_SCRIPT_JS)
+                       .replace("/*CONFIG_ENDPOINT*/", CONFIG_ENDPOINT_JS))
+
+INNER = STYLE + BODY + SCRIPT_FILLED
 
 # ------------------------------------------------------------------ standalone doc
 STANDALONE = (
@@ -864,7 +1032,7 @@ STANDALONE = (
     "<title>Environmental Science Semester Diagnostic (SEV1–SEV5)</title>\n"
     "<meta name=\"description\" content=\"Grade 9 Georgia Environmental Science pre/post diagnostic — 40 aligned "
     "multiple-choice items with instant per-standard reporting and a class data analyzer.\">\n"
-    + STYLE + "\n</head>\n<body>\n" + BODY + SCRIPT.replace("/*DATA*/", JS_DATA) + "\n</body>\n</html>\n"
+    + STYLE + "\n</head>\n<body>\n" + BODY + SCRIPT_FILLED + "\n</body>\n</html>\n"
 )
 with open(os.path.join(ROOT, "assessment.html"), "w", encoding="utf-8") as f:
     f.write(STANDALONE)
