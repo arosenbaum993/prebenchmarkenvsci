@@ -806,6 +806,14 @@ STANDALONE = (
 with open(os.path.join(ROOT, "assessment.html"), "w", encoding="utf-8") as f:
     f.write(STANDALONE)
 
+# index.html is identical to assessment.html so that a GitHub Pages / static-host
+# site root (…/) opens the test directly instead of showing the README.
+with open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8") as f:
+    f.write(STANDALONE)
+
+# Ensure static hosting serves files as-is (no Jekyll processing).
+open(os.path.join(ROOT, ".nojekyll"), "w").close()
+
 with open(os.path.join(ROOT, "build", "artifact_body.html"), "w", encoding="utf-8") as f:
     f.write("<title>Environmental Science Semester Diagnostic</title>\n" + INNER)
 

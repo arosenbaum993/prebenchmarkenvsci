@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Environmental Science Semester Diagnostic (SEV1–SEV5)</title>
+<meta name="description" content="Grade 9 Georgia Environmental Science pre/post diagnostic — 40 aligned multiple-choice items with instant per-standard reporting and a class data analyzer.">
+
+<style>
+:root{
+  --bg:#eef2ee; --surface:#ffffff; --surface-2:#e8ede8;
+  --ink:#17231e; --ink-soft:#516059; --ink-faint:#7d8a83;
+  --line:#d6ddd6; --line-strong:#c2cbc2;
+  --primary:#1f4a3f; --primary-ink:#f3f7f4;
+  --accent:#0e7c86; --accent-soft:#e2f0f1;
+  --good:#2e7d5b; --good-bg:#e4f2ea;
+  --warn:#a5711a; --warn-bg:#f6ecd8;
+  --crit:#b1442c; --crit-bg:#f6e2db;
+  --shadow:0 1px 2px rgba(20,40,32,.06),0 6px 20px rgba(20,40,32,.06);
+  --radius:14px; --radius-sm:9px;
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0f1613; --surface:#16211c; --surface-2:#1c2a23;
+    --ink:#e8eee9; --ink-soft:#a6b3ab; --ink-faint:#7c8a82;
+    --line:#2a3a31; --line-strong:#38493f;
+    --primary:#8fc3b0; --primary-ink:#0f1613;
+    --accent:#3fb6c0; --accent-soft:#123338;
+    --good:#66c295; --good-bg:#12291f;
+    --warn:#d8a44e; --warn-bg:#2c2413;
+    --crit:#e08065; --crit-bg:#2e1a14;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="light"]{
+  --bg:#eef2ee; --surface:#ffffff; --surface-2:#e8ede8;
+  --ink:#17231e; --ink-soft:#516059; --ink-faint:#7d8a83;
+  --line:#d6ddd6; --line-strong:#c2cbc2;
+  --primary:#1f4a3f; --primary-ink:#f3f7f4; --accent:#0e7c86; --accent-soft:#e2f0f1;
+  --good:#2e7d5b; --good-bg:#e4f2ea; --warn:#a5711a; --warn-bg:#f6ecd8;
+  --crit:#b1442c; --crit-bg:#f6e2db;
+  --shadow:0 1px 2px rgba(20,40,32,.06),0 6px 20px rgba(20,40,32,.06);
+}
+:root[data-theme="dark"]{
+  --bg:#0f1613; --surface:#16211c; --surface-2:#1c2a23;
+  --ink:#e8eee9; --ink-soft:#a6b3ab; --ink-faint:#7c8a82;
+  --line:#2a3a31; --line-strong:#38493f;
+  --primary:#8fc3b0; --primary-ink:#0f1613; --accent:#3fb6c0; --accent-soft:#123338;
+  --good:#66c295; --good-bg:#12291f; --warn:#d8a44e; --warn-bg:#2c2413;
+  --crit:#e08065; --crit-bg:#2e1a14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  line-height:1.55;-webkit-font-smoothing:antialiased;font-size:16px}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 96px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.2;text-wrap:balance;margin:0}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--sans);text-transform:uppercase;letter-spacing:.12em;
+  font-size:.7rem;font-weight:700;color:var(--accent)}
+.muted{color:var(--ink-soft)}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* header */
+header.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-inner{max-width:860px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px}
+.mark{width:34px;height:34px;border-radius:9px;flex:0 0 auto;background:
+  radial-gradient(circle at 30% 28%,var(--accent),var(--primary));position:relative}
+.mark::after{content:"";position:absolute;inset:0;border-radius:9px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.top h1{font-size:1.02rem}
+.top .sub{font-size:.72rem;color:var(--ink-soft);font-family:var(--sans)}
+.spacer{flex:1}
+.theme-btn{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink-soft);
+  border-radius:20px;padding:6px 12px;font-size:.76rem;cursor:pointer;font-family:var(--sans)}
+.theme-btn:hover{color:var(--ink);border-color:var(--accent)}
+.progress-rail{height:4px;background:var(--surface-2);width:100%}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--primary));width:0;
+  transition:width .35s ease}
+
+/* hero / cards */
+.hero{padding:44px 0 8px}
+.hero h2{font-size:2rem;margin-bottom:10px;letter-spacing:-.01em}
+.hero p{max-width:60ch;color:var(--ink-soft);margin:0}
+.badgerow{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
+.badge{font-size:.72rem;font-weight:600;color:var(--ink-soft);background:var(--surface);
+  border:1px solid var(--line);border-radius:20px;padding:5px 11px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+@media(max-width:680px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px;box-shadow:var(--shadow)}
+.card h3{font-size:1.12rem;margin-bottom:6px}
+.card p{margin:0 0 14px;color:var(--ink-soft);font-size:.92rem}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.field label{font-size:.78rem;font-weight:600;color:var(--ink-soft)}
+.field input,.field select{font:inherit;padding:9px 11px;border:1px solid var(--line-strong);
+  border-radius:var(--radius-sm);background:var(--bg);color:var(--ink)}
+.field input:focus,.field select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.form-toggle{display:flex;gap:8px}
+.form-toggle label{flex:1;border:1px solid var(--line-strong);border-radius:var(--radius-sm);
+  padding:10px 12px;cursor:pointer;font-size:.86rem;text-align:center;background:var(--bg)}
+.form-toggle input{position:absolute;opacity:0;width:0;height:0}
+.form-toggle input:checked + span{color:var(--primary);font-weight:700}
+.form-toggle label:has(input:checked){border-color:var(--accent);background:var(--accent-soft);
+  box-shadow:inset 0 0 0 1px var(--accent)}
+
+.btn{font:inherit;font-weight:600;cursor:pointer;border-radius:var(--radius-sm);padding:11px 18px;
+  border:1px solid transparent;background:var(--primary);color:var(--primary-ink)}
+.btn:hover{filter:brightness(1.06)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.ghost{background:var(--surface);color:var(--ink);border-color:var(--line-strong)}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent);filter:none}
+.btn.sm{padding:8px 13px;font-size:.82rem}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px}
+
+/* test */
+.section-head{display:flex;align-items:baseline;gap:12px;margin:30px 0 4px}
+.section-head .std{font-size:.8rem;font-weight:700;color:var(--accent);font-family:var(--sans)}
+.section-head h2{font-size:1.3rem}
+.section-desc{color:var(--ink-soft);font-size:.9rem;margin:2px 0 14px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 18px 8px;margin:14px 0;box-shadow:var(--shadow);border:0;min-width:0}
+.q legend{padding:0;display:block;width:100%;float:left}
+.q::after{content:"";display:table;clear:both}
+.q .qmeta{font-size:.7rem;color:var(--ink-faint);font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase;margin-bottom:6px}
+.q .stem{font-size:1.02rem;font-weight:500;margin-bottom:12px}
+.opt{display:flex;gap:11px;align-items:flex-start;padding:11px 13px;border:1px solid var(--line);
+  border-radius:var(--radius-sm);margin-bottom:9px;cursor:pointer;background:var(--bg);transition:border-color .15s}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin-top:3px;accent-color:var(--accent);width:17px;height:17px;flex:0 0 auto}
+.opt .lett{font-weight:700;color:var(--ink-soft);font-family:var(--mono);font-size:.85rem;margin-top:1px}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:1px}
+.navbar{display:flex;align-items:center;gap:12px;margin-top:22px;flex-wrap:wrap}
+.count-pill{font-size:.8rem;color:var(--ink-soft);background:var(--surface);border:1px solid var(--line);
+  border-radius:20px;padding:6px 12px;font-variant-numeric:tabular-nums}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0}
+.dot{width:26px;height:26px;border-radius:7px;border:1px solid var(--line-strong);background:var(--surface);
+  font-size:.72rem;cursor:pointer;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.dot.done{background:var(--primary);color:var(--primary-ink);border-color:var(--primary)}
+.dot.current{outline:2px solid var(--accent);outline-offset:1px}
+
+/* report */
+.report-head{padding:24px 0 6px}
+.scorecard{display:flex;gap:18px;flex-wrap:wrap;align-items:center;background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-top:8px}
+.ring{--p:0;width:104px;height:104px;border-radius:50%;flex:0 0 auto;
+  background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--surface-2) 0);
+  display:grid;place-items:center}
+.ring .inner{width:78px;height:78px;border-radius:50%;background:var(--surface);display:grid;place-items:center;text-align:center}
+.ring .pct{font-size:1.5rem;font-weight:700;font-family:var(--mono);line-height:1}
+.ring .cap{font-size:.62rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em}
+.std-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.std-row:first-of-type{border-top:0}
+.std-row .lab{flex:1;min-width:0}
+.std-row .lab .code{font-weight:700;font-size:.82rem}
+.std-row .lab .name{font-size:.82rem;color:var(--ink-soft)}
+.meter{width:120px;height:9px;border-radius:6px;background:var(--surface-2);overflow:hidden;flex:0 0 auto}
+.meter span{display:block;height:100%}
+.band{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;
+  border-radius:20px;flex:0 0 auto;width:96px;text-align:center}
+.band.secure{color:var(--good);background:var(--good-bg)}
+.band.developing{color:var(--warn);background:var(--warn-bg)}
+.band.beginning{color:var(--crit);background:var(--crit-bg)}
+.fill.secure{background:var(--good)} .fill.developing{background:var(--warn)} .fill.beginning{background:var(--crit)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 20px;box-shadow:var(--shadow);margin-top:16px}
+.panel h3{font-size:1.05rem;margin-bottom:4px}
+details.teacher{margin-top:16px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+details.teacher>summary{cursor:pointer;padding:15px 20px;font-weight:600;list-style:none;
+  display:flex;align-items:center;gap:10px}
+details.teacher>summary::-webkit-details-marker{display:none}
+details.teacher>summary::before{content:"▸";color:var(--accent);transition:transform .2s}
+details.teacher[open]>summary::before{transform:rotate(90deg)}
+.tablewrap{overflow-x:auto;margin:4px 0}
+table{border-collapse:collapse;width:100%;font-size:.84rem;min-width:520px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700}
+td.tnum,th.tnum{text-align:right;font-variant-numeric:tabular-nums}
+tr .ok{color:var(--good);font-weight:700} tr .no{color:var(--crit);font-weight:700}
+.cellband{display:inline-block;padding:2px 7px;border-radius:6px;font-weight:700;font-size:.78rem;font-variant-numeric:tabular-nums}
+.cellband.secure{color:var(--good);background:var(--good-bg)}
+.cellband.developing{color:var(--warn);background:var(--warn-bg)}
+.cellband.beginning{color:var(--crit);background:var(--crit-bg)}
+.miscrow{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px dashed var(--line)}
+.miscrow:first-child{border-top:0}
+.freq{font-family:var(--mono);font-weight:700;color:var(--crit);flex:0 0 auto;font-variant-numeric:tabular-nums}
+textarea{width:100%;min-height:120px;font-family:var(--mono);font-size:.8rem;padding:12px;
+  border:1px solid var(--line-strong);border-radius:var(--radius-sm);background:var(--bg);color:var(--ink);resize:vertical}
+textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.codebox{font-family:var(--mono);font-size:.74rem;word-break:break-all;background:var(--bg);
+  border:1px dashed var(--line-strong);border-radius:var(--radius-sm);padding:11px;color:var(--ink-soft);margin-top:8px}
+.note{font-size:.82rem;color:var(--ink-soft);background:var(--accent-soft);border-left:3px solid var(--accent);
+  padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+.hidden{display:none!important}
+.legend-key{display:flex;gap:14px;flex-wrap:wrap;font-size:.75rem;color:var(--ink-soft);margin-top:10px}
+.legend-key b{font-weight:700}
+footer.foot{max-width:860px;margin:40px auto 0;padding:20px;border-top:1px solid var(--line);
+  color:var(--ink-faint);font-size:.76rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  header.top,.navbar,.dots,.btnrow,.theme-btn,.export-row,details.teacher>summary::before{display:none!important}
+  body{background:#fff;color:#000} .card,.panel,.scorecard{box-shadow:none;border-color:#bbb}
+  details.teacher[open]{border-color:#bbb}
+}
+</style>
+
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="mark" aria-hidden="true"></div>
+    <div>
+      <h1>Environmental Science &mdash; Semester Diagnostic</h1>
+      <div class="sub">Georgia SEV1&ndash;SEV5 &middot; course 26.06110 &middot; Grade 9</div>
+    </div>
+    <div class="spacer"></div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle light or dark theme">Theme</button>
+  </div>
+  <div class="progress-rail" id="rail" hidden><div class="progress-fill" id="fill"></div></div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ HOME ============ -->
+  <section id="home">
+    <div class="hero">
+      <div class="eyebrow">Pre &amp; Post Assessment</div>
+      <h2>One test, two jobs: find the gaps in week&nbsp;1, measure the growth in week&nbsp;18.</h2>
+      <p>Forty multiple-choice items built directly from the Georgia Standards of Excellence and GaDOE
+      Teacher Notes. Every question is tagged to a standard and element, and most wrong answers are keyed
+      to a specific, documented student misconception &mdash; so the results tell you <em>what</em> to reteach and
+      <em>to&nbsp;whom</em>, not just a score.</p>
+      <div class="badgerow" id="blueprintBadges"></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Take the assessment</h3>
+        <p>Students enter their name and class, choose the form the teacher assigns, and answer online. Results are scored instantly.</p>
+        <div class="field"><label for="stuName">Student name</label><input id="stuName" autocomplete="off" placeholder="First and last name"></div>
+        <div class="grid2" style="margin-top:0;gap:12px">
+          <div class="field"><label for="stuClass">Class / period</label><input id="stuClass" autocomplete="off" placeholder="e.g. Period 3"></div>
+          <div class="field"><label for="stuId">Student ID (optional)</label><input id="stuId" autocomplete="off" placeholder="ID"></div>
+        </div>
+        <div class="field">
+          <label>Which form?</label>
+          <div class="form-toggle" role="radiogroup" aria-label="Choose test form">
+            <label><input type="radio" name="form" value="A" checked><span>Pre-Test &middot; Form A</span></label>
+            <label><input type="radio" name="form" value="B"><span>Post-Test &middot; Form B</span></label>
+          </div>
+        </div>
+        <button class="btn" id="startBtn" type="button" style="width:100%">Start the assessment &rarr;</button>
+      </div>
+
+      <div class="card">
+        <h3>Teacher tools</h3>
+        <p>Review every answer and its standard alignment, or paste your students' result codes to build a class picture and instructional groups.</p>
+        <div class="btnrow" style="flex-direction:column">
+          <button class="btn ghost" id="keyBtn" type="button" style="width:100%">Answer key &amp; alignment</button>
+          <button class="btn ghost" id="analyzeBtn" type="button" style="width:100%">Class data analyzer</button>
+        </div>
+        <div class="note" style="margin-top:16px">Robust data, no login: after each student finishes, they get a short
+        <b>result code</b>. Collect the codes (LMS, form, or shared doc) and paste them into the analyzer for a
+        class heatmap, item analysis, and ready-made reteaching groups.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TEST ============ -->
+  <section id="test" class="hidden">
+    <div class="report-head">
+      <div class="eyebrow" id="testFormLabel">Pre-Test &middot; Form A</div>
+      <h2 id="testTitle" style="font-size:1.5rem">Answer every question you can.</h2>
+      <p class="muted" style="margin:6px 0 0">There's no time limit. If you're unsure, pick your best answer &mdash; a guess still tells your teacher what to review. Your honest answers help plan the semester.</p>
+    </div>
+    <div class="dots" id="dots" aria-hidden="true"></div>
+    <form id="quizForm"><div id="sections"></div></form>
+    <div class="navbar">
+      <button class="btn ghost sm" id="prevBtn" type="button">&larr; Previous</button>
+      <button class="btn ghost sm" id="nextBtn" type="button">Next section &rarr;</button>
+      <span class="spacer"></span>
+      <span class="count-pill" id="answered">0 / 0 answered</span>
+      <button class="btn" id="submitBtn" type="button">Submit</button>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section id="results" class="hidden"></section>
+
+  <!-- ============ ANSWER KEY ============ -->
+  <section id="answerkey" class="hidden"></section>
+
+  <!-- ============ ANALYZER ============ -->
+  <section id="analyzer" class="hidden"></section>
+
+</main>
+
+<footer class="foot">
+  Aligned to the Science Georgia Standards of Excellence for Environmental Science (26.06110) and the GaDOE
+  Environmental Science Teacher Notes &amp; High School Curriculum Map. Item distractors are drawn from the
+  &ldquo;potential initial student ideas&rdquo; documented in the Teacher Notes. Built as a classroom diagnostic tool.
+</footer>
+
+<script>
+const DATA = {"standards": {"SEV1": "Flow of energy and cycling of matter within an ecosystem", "SEV2": "Stability and change in Earth's ecosystems", "SEV3": "Types, availability, allocation, and sustainability of energy resources", "SEV4": "Human impact on natural resources", "SEV5": "Effects of human population growth on global ecosystems"}, "elements": {"SEV1a": "Levels of biological organization (organism → biosphere)", "SEV1b": "Laws of Thermodynamics & energy transfer (food chains/webs, trophic levels, 10% rule)", "SEV1c": "Biogeochemical cycles (water, carbon, nitrogen, phosphorus, oxygen)", "SEV1d": "Physical factors & organismal adaptations in terrestrial biomes", "SEV1e": "Chemical & physical properties of Georgia aquatic biomes", "SEV2a": "Short- & long-term natural climate fluctuations (El Niño, volcanism, Milankovitch)", "SEV2b": "Atmospheric chemistry (CO₂, methane) & the greenhouse effect", "SEV2c": "Ecological succession (biomass, biodiversity, complexity)", "SEV2d": "Value of biodiversity in ecosystem resilience", "SEV3a": "Origin & consumption of renewable & non-renewable energy", "SEV3b": "Risks & benefits of energy sources", "SEV3c": "Sustainability potential of energy resources", "SEV3d": "Design & defend a sustainable energy plan for a location", "SEV4a": "Effects of human activities on natural resources", "SEV4b": "Solutions to reduce human impact (smog, ozone, urbanization, ocean acidification)", "SEV4c": "Human population growth vs. food demand/supply (GMOs, monoculture, desertification, Green Revolution)", "SEV5a": "Quality of life & human impact (population growth, education, GNP)", "SEV5b": "Global population patterns (fertility/mortality, demographic transition, pyramids)", "SEV5c": "Ecological effects of human innovations (Ag, Industrial, Medical, Technological)", "SEV5d": "Personal sustainability plan & market/societal forces"}, "segments": {"Planet Earth": ["SEV1a", "SEV1b", "SEV1d", "SEV2c", "SEV2d"], "Rhythms of Planet Earth": ["SEV1c", "SEV1e", "SEV2a", "SEV2b"], "Humans on Planet Earth": ["SEV3a", "SEV3b", "SEV3c", "SEV4a", "SEV4c", "SEV5a", "SEV5b", "SEV5c"], "Sustaining Planet Earth": ["SEV3d", "SEV4b", "SEV5d"]}, "formLen": 40, "items": [{"id": "SEV1a-A1", "form": "A", "std": "SEV1", "el": "a", "target": "Identify levels of organization", "stem": "All of the white-tailed deer living in Red Top Mountain State Park make up which level of biological organization?", "options": ["An organism", "A population", "A community", "An ecosystem"], "answer": 1, "diagnoses": {"2": "Thinks a single-species group is a 'community' rather than a population."}}, {"id": "SEV1a-A2", "form": "A", "std": "SEV1", "el": "a", "target": "Ecosystem includes abiotic factors", "stem": "Which level of organization includes BOTH the living and the non-living parts of an area?", "options": ["Population", "Community", "Ecosystem", "Organism"], "answer": 2, "diagnoses": {"1": "Believes only the biotic (living) components make up an ecosystem."}}, {"id": "SEV1a-B1", "form": "B", "std": "SEV1", "el": "a", "target": "Identify levels of organization", "stem": "Every largemouth bass living in one Georgia farm pond represents which level of biological organization?", "options": ["A community", "A population", "An ecosystem", "The biosphere"], "answer": 1, "diagnoses": {"0": "Thinks a single-species group is a 'community' rather than a population."}}, {"id": "SEV1a-B2", "form": "B", "std": "SEV1", "el": "a", "target": "Ecosystem includes abiotic factors", "stem": "A student says an ecosystem is made of only the living things in an area. What is the student leaving out?", "options": ["Nothing; that definition is complete", "The non-living (abiotic) factors such as water, soil, and sunlight", "Only the largest animals", "The neighboring biosphere"], "answer": 1, "diagnoses": {"0": "Believes only the biotic (living) components make up an ecosystem."}}, {"id": "SEV1b-A1", "form": "A", "std": "SEV1", "el": "b", "target": "Apply the 10% rule", "stem": "A producer level in a food chain contains 10,000 kcal of energy. Using the 10% rule, about how much energy is available to the SECONDARY consumers?", "options": ["1,000 kcal", "100 kcal", "10 kcal", "9,000 kcal"], "answer": 1, "diagnoses": {"3": "Thinks 90% (not 10%) of energy passes to the next trophic level."}}, {"id": "SEV1b-A2", "form": "A", "std": "SEV1", "el": "b", "target": "Energy is transformed, not destroyed", "stem": "As energy moves up a food chain, about 90% is not passed to the next level. What happens to that energy?", "options": ["It is destroyed", "It is released mostly as heat and is no longer usable by the next level", "It is stored permanently in the producers", "It travels back to the Sun"], "answer": 1, "diagnoses": {"0": "Believes energy 'lost' between trophic levels is destroyed (violates the 1st Law)."}}, {"id": "SEV1b-B1", "form": "B", "std": "SEV1", "el": "b", "target": "Apply the 10% rule", "stem": "Grass in a field stores 50,000 kcal of energy. Following the 10% rule, about how much energy reaches the primary consumers (grasshoppers)?", "options": ["500 kcal", "5,000 kcal", "45,000 kcal", "50,000 kcal"], "answer": 1, "diagnoses": {"2": "Thinks 90% (not 10%) of energy passes to the next trophic level."}}, {"id": "SEV1b-B2", "form": "B", "std": "SEV1", "el": "b", "target": "Matter cycles, energy flows", "stem": "Which statement correctly describes matter and energy in an ecosystem?", "options": ["Both energy and matter are recycled endlessly", "Energy flows one way and is lost as heat, while matter cycles and is reused", "Matter flows away as heat while energy is recycled", "Both energy and matter are destroyed at each level"], "answer": 1, "diagnoses": {"0": "Believes energy is recycled like matter rather than flowing one way."}}, {"id": "SEV1c-A1", "form": "A", "std": "SEV1", "el": "c", "target": "Role of microbes in the nitrogen cycle", "stem": "Plants cannot use nitrogen gas (N₂) directly from the air. What makes nitrogen available to plants?", "options": ["Lightning turns all N₂ into oxygen", "Bacteria (microbes) convert N₂ into forms plants can absorb", "Plants breathe in N₂ through their leaves", "Nitrogen is manufactured inside the plant"], "answer": 1, "diagnoses": {"2": "Thinks plants obtain usable nitrogen by 'breathing it in' rather than through microbial fixation."}}, {"id": "SEV1c-A2", "form": "A", "std": "SEV1", "el": "c", "target": "Carbon cycle: photosynthesis removes CO₂", "stem": "Which process removes carbon dioxide from the atmosphere and stores carbon in living tissue?", "options": ["Cellular respiration", "Photosynthesis", "Combustion", "Decomposition"], "answer": 1, "diagnoses": {"0": "Reverses photosynthesis and respiration in the carbon cycle."}}, {"id": "SEV1c-B1", "form": "B", "std": "SEV1", "el": "c", "target": "Phosphorus cycle differs (no atmosphere step)", "stem": "Why does phosphorus move differently through its cycle than carbon and nitrogen do?", "options": ["Phosphorus is a gas that stays in the air", "Phosphorus rarely enters the atmosphere and is found mostly in rock and soil", "Phosphorus is not needed by living things", "Phosphorus is found only in the ocean"], "answer": 1, "diagnoses": {"2": "Believes only some cycles matter to life; overlooks phosphorus in DNA, ATP, etc."}}, {"id": "SEV1c-B2", "form": "B", "std": "SEV1", "el": "c", "target": "Cycles are interdependent", "stem": "A student claims the water, carbon, and nitrogen cycles each work completely on their own. Why is this incorrect?", "options": ["It is correct — each cycle is fully separate", "The cycles are interconnected; matter moves among them (e.g., decomposers return carbon and nitrogen to soil)", "Only the water cycle is real", "The cycles interact only inside animals"], "answer": 1, "diagnoses": {"0": "Believes the biogeochemical cycles are completely independent of one another."}}, {"id": "SEV1d-A1", "form": "A", "std": "SEV1", "el": "d", "target": "Match adaptation to physical factor", "stem": "Desert cacti store water in thick stems and have a waxy coating. These adaptations are mainly a response to which physical factors?", "options": ["High rainfall and cool temperatures", "Intense sunlight and scarce water (high insolation, low precipitation)", "Cold ocean breezes", "Deep, nutrient-rich forest soil"], "answer": 1, "diagnoses": {"3": "Attributes adaptations to biotic/soil factors rather than the controlling abiotic factors."}}, {"id": "SEV1d-A2", "form": "A", "std": "SEV1", "el": "d", "target": "Proximity to coastline shapes adaptations", "stem": "Which statement best explains why organisms living far inland often differ from those living near a coastline?", "options": ["Inland and coastal organisms are always identical", "Distance from the ocean changes moisture and temperature, so organisms adapt differently", "Coastlines have no effect on organisms", "Only the other animals present determine adaptations"], "answer": 1, "diagnoses": {"3": "Believes there is little or no relationship between abiotic factors and adaptations."}}, {"id": "SEV1d-B1", "form": "B", "std": "SEV1", "el": "d", "target": "Match adaptation to physical factor", "stem": "Rocky Mountain goats have hard, split hooves and are extremely sure-footed. Which physical factor most directly shaped this adaptation?", "options": ["Topography (steep, rocky terrain)", "Proximity to the ocean", "Length of daylight", "Soil nitrogen level"], "answer": 0, "diagnoses": {"1": "Selects an abiotic factor unrelated to the described adaptation."}}, {"id": "SEV1d-B2", "form": "B", "std": "SEV1", "el": "d", "target": "Abiotic factors influence survival", "stem": "A camel is well adapted to shifting sand and long dry periods but would struggle on steep, rocky cliffs. This shows that:", "options": ["Adaptations depend only on the other animals present", "Physical (abiotic) factors strongly influence which adaptations help an organism survive", "Adaptations are random and unrelated to the environment", "All environments require the same adaptations"], "answer": 1, "diagnoses": {"0": "Believes only biotic factors drive adaptation.", "2": "Believes adaptations are unrelated to environmental conditions."}}, {"id": "SEV1e-A1", "form": "A", "std": "SEV1", "el": "e", "target": "Importance of dissolved oxygen", "stem": "A healthy Georgia stream usually has dissolved oxygen (DO) between 5 and 8 ppm. Why does dissolved oxygen matter?", "options": ["Fish and other aquatic organisms need it to survive", "It makes the water more acidic", "Aquatic organisms get all their oxygen from water molecules, so DO does not matter", "It increases the turbidity of the water"], "answer": 0, "diagnoses": {"2": "Believes oxygen is unimportant to aquatic life because organisms get it from H₂O molecules."}}, {"id": "SEV1e-A2", "form": "A", "std": "SEV1", "el": "e", "target": "Macroinvertebrates as indicator species", "stem": "Scientists collect many mayfly, stonefly, and caddisfly larvae (sensitive species) from a stream. What does this most likely indicate?", "options": ["The water is heavily polluted", "The water is healthy with enough dissolved oxygen", "The water contains no oxygen at all", "Nothing can be inferred about water quality"], "answer": 1, "diagnoses": {"0": "Confuses sensitive (pollution-intolerant) species with tolerant, pollution-loving species."}}, {"id": "SEV1e-B1", "form": "B", "std": "SEV1", "el": "e", "target": "Interpret a physical water-quality test", "stem": "Which measurement tells a scientist how cloudy (how much suspended material is in) stream water?", "options": ["pH", "Turbidity", "Dissolved oxygen", "Temperature"], "answer": 1, "diagnoses": {"0": "Confuses acidity/basicity with cloudiness of water."}}, {"id": "SEV1e-B2", "form": "B", "std": "SEV1", "el": "e", "target": "Diversity indicates a healthy stream", "stem": "Which macroinvertebrate sample best indicates a HEALTHY Georgia stream?", "options": ["Only tolerant aquatic worms and mosquito larvae", "A diverse mix that includes sensitive mayfly and stonefly larvae", "No living organisms at all", "A huge number of a single tolerant species"], "answer": 1, "diagnoses": {"3": "Equates abundance of one tolerant species with good water quality rather than diversity."}}, {"id": "SEV2a-A1", "form": "A", "std": "SEV2", "el": "a", "target": "Volcanism as a short-term climate driver", "stem": "The 1991 eruption of Mt. Pinatubo temporarily lowered Earth's average temperature by about 0.5°C. Why?", "options": ["The volcano added oxygen to the atmosphere", "Ash and gases blocked some incoming sunlight", "Lava warmed the oceans worldwide", "It permanently changed Earth's orbit"], "answer": 1, "diagnoses": {"3": "Confuses a short-term event with long-term orbital (Milankovitch) change."}}, {"id": "SEV2a-A2", "form": "A", "std": "SEV2", "el": "a", "target": "Distinguish long-term from short-term drivers", "stem": "Which is an example of a LONG-term natural cause of climate change (acting over tens of thousands of years)?", "options": ["An El Niño event", "A single volcanic eruption", "Milankovitch cycles (changes in Earth's orbit and tilt)", "A summer heat wave"], "answer": 2, "diagnoses": {"0": "Classifies a short-term (2–7 year) fluctuation as a long-term driver."}}, {"id": "SEV2a-B1", "form": "B", "std": "SEV2", "el": "a", "target": "El Niño is a natural, recurring fluctuation", "stem": "During an El Niño event, the trade winds weaken or reverse. El Niño typically occurs:", "options": ["Once every million years", "Every 2–7 years, on no fixed schedule", "Only because of human air pollution", "Every year on the same date"], "answer": 1, "diagnoses": {"2": "Believes all climate change is caused by humans."}}, {"id": "SEV2a-B2", "form": "B", "std": "SEV2", "el": "a", "target": "Climate can change naturally", "stem": "A student says climates can never change unless humans cause it. Which evidence best corrects this idea?", "options": ["Climates truly never change", "Natural events — volcanoes, El Niño, and orbital cycles — changed climate long before humans existed", "Only factories can change the climate", "Climate change is not real"], "answer": 1, "diagnoses": {"0": "Believes climates cannot change.", "2": "Believes climate change is always due to human impact."}}, {"id": "SEV2b-A1", "form": "A", "std": "SEV2", "el": "b", "target": "How greenhouse gases affect temperature", "stem": "Greenhouse gases such as carbon dioxide and methane affect Earth's temperature by:", "options": ["Blocking all sunlight from entering the atmosphere", "Trapping heat near Earth's surface", "Cooling the planet by reflecting all heat into space", "Producing oxygen for living things"], "answer": 1, "diagnoses": {"2": "Believes greenhouse gases cool the planet rather than trap heat."}}, {"id": "SEV2b-A2", "form": "A", "std": "SEV2", "el": "b", "target": "Greenhouse gases are natural and necessary", "stem": "Which statement about greenhouse gases is TRUE?", "options": ["They are entirely human-made and unnatural", "They occur naturally and keep Earth warm enough for life", "They exist only in the atmosphere and nowhere else", "They have no effect on temperature"], "answer": 1, "diagnoses": {"0": "Believes greenhouse gases are not a natural part of Earth's atmosphere.", "2": "Believes greenhouse gases exist only in the atmosphere (ignores sinks/organisms)."}}, {"id": "SEV2b-B1", "form": "B", "std": "SEV2", "el": "b", "target": "Interpret CO₂–temperature data", "stem": "Data show that atmospheric CO₂ and average global temperature both rose over the same time period. This pattern is best described as:", "options": ["Evidence that temperature has no pattern", "A correlation suggesting rising greenhouse gases and rising temperature are related", "Proof that the atmosphere contains no greenhouse gases", "Showing no relationship between the two"], "answer": 1, "diagnoses": {"3": "Fails to recognize a correlation between greenhouse gases and temperature."}}, {"id": "SEV2b-B2", "form": "B", "std": "SEV2", "el": "b", "target": "Carbon sinks affect atmospheric CO₂", "stem": "Besides releasing gases, what else can increase the amount of CO₂ in the atmosphere?", "options": ["Planting more forests", "Removing carbon sinks such as forests (deforestation), so less CO₂ is absorbed", "Increasing the size of the ocean", "Nothing else can affect atmospheric CO₂"], "answer": 1, "diagnoses": {"3": "Thinks only emissions — not the loss of sinks — change atmospheric CO₂."}}, {"id": "SEV2c-A1", "form": "A", "std": "SEV2", "el": "c", "target": "Identify primary succession", "stem": "Which situation would begin PRIMARY succession?", "options": ["A forest recovering after a wildfire (soil remains)", "Bare rock exposed after a glacier retreats (no soil)", "An abandoned farm field that still has soil", "A flooded meadow that keeps its soil"], "answer": 1, "diagnoses": {"0": "Confuses secondary succession (soil remains) with primary succession."}}, {"id": "SEV2c-A2", "form": "A", "std": "SEV2", "el": "c", "target": "Trends in biomass/biodiversity during succession", "stem": "As an ecosystem moves through succession toward a climax community, biomass and biodiversity generally:", "options": ["Increase", "Decrease", "Stay exactly the same", "Disappear completely"], "answer": 0, "diagnoses": {"2": "Believes biodiversity is not part of succession."}}, {"id": "SEV2c-B1", "form": "B", "std": "SEV2", "el": "c", "target": "Pioneer species in succession", "stem": "Lichens and mosses are often the first organisms to colonize bare rock after a disturbance. These are called:", "options": ["Keystone species", "Pioneer species", "Invasive species", "A climax community"], "answer": 1, "diagnoses": {"3": "Confuses the first colonizers with the final, stable climax stage."}}, {"id": "SEV2c-B2", "form": "B", "std": "SEV2", "el": "c", "target": "Climax communities differ; timescale", "stem": "A student says every climax community looks the same and always takes thousands of years to form. What is the best correction?", "options": ["The student is completely correct", "Climax communities differ by biome and can develop over decades up to about 150 years — not always thousands", "Succession never reaches a climax community", "Deserts and forests reach identical climax communities"], "answer": 1, "diagnoses": {"0": "Believes succession always takes thousands of years and all climax communities are the same.", "3": "Believes all climax communities look the same regardless of biome."}}, {"id": "SEV2d-A1", "form": "A", "std": "SEV2", "el": "d", "target": "Identify a keystone species", "stem": "The gopher tortoise digs burrows that many other Georgia species use for shelter and to escape fire. The gopher tortoise is best described as a:", "options": ["Invasive species", "Keystone species", "Non-native species", "Pioneer species"], "answer": 1, "diagnoses": {"0": "Confuses a native species others depend on with a harmful introduced species."}}, {"id": "SEV2d-A2", "form": "A", "std": "SEV2", "el": "d", "target": "Biodiversity supports resilience", "stem": "Why does higher biodiversity usually make an ecosystem more stable and resilient?", "options": ["It does not — biodiversity has no effect on stability", "With more species, others can fill a role if one declines, keeping the ecosystem functioning", "More species always cause an ecosystem to collapse", "Only the largest species affect stability"], "answer": 1, "diagnoses": {"0": "Believes biodiversity does not make an ecosystem more stable."}}, {"id": "SEV2d-B1", "form": "B", "std": "SEV2", "el": "d", "target": "Identify an invasive species", "stem": "Kudzu was introduced to the southeastern United States and now grows over and outcompetes native plants. Kudzu is an example of a(n):", "options": ["Endemic species", "Keystone species", "Invasive species", "Indicator species"], "answer": 2, "diagnoses": {"0": "Confuses a spreading introduced species with one found only in a single place."}}, {"id": "SEV2d-B2", "form": "B", "std": "SEV2", "el": "d", "target": "Not all non-native species are invasive", "stem": "Which statement about non-native species is correct?", "options": ["Every non-native species becomes invasive", "Only some non-native species become invasive; many cause little harm", "Non-native species are always helpful to an ecosystem", "'Native' and 'non-native' mean the same thing"], "answer": 1, "diagnoses": {"0": "Believes all non-native species end up being invasive species."}}, {"id": "SEV3a-A1", "form": "A", "std": "SEV3", "el": "a", "target": "Classify a non-renewable source", "stem": "Which of the following is a NON-renewable energy source?", "options": ["Wind", "Solar", "Coal", "Geothermal"], "answer": 2, "diagnoses": {"0": "Misclassifies a renewable source as non-renewable."}}, {"id": "SEV3a-A2", "form": "A", "std": "SEV3", "el": "a", "target": "Why nuclear is grouped as non-renewable", "stem": "Why is nuclear power usually grouped with the non-renewable sources?", "options": ["Because it runs on sunlight", "Because it depends on uranium, a limited (non-renewable) fuel", "Because it uses flowing water", "Because it never produces any waste"], "answer": 1, "diagnoses": {"0": "Believes nuclear power is a renewable energy source."}}, {"id": "SEV3a-B1", "form": "B", "std": "SEV3", "el": "a", "target": "Identify a list of renewables", "stem": "Which list contains ONLY renewable energy sources?", "options": ["Coal, oil, natural gas", "Solar, wind, hydropower", "Uranium, coal, solar", "Natural gas, wind, oil"], "answer": 1, "diagnoses": {"2": "Includes a non-renewable fuel (uranium/coal) among 'renewables'."}}, {"id": "SEV3a-B2", "form": "B", "std": "SEV3", "el": "a", "target": "Interpret U.S. energy-use data", "stem": "According to U.S. energy data, which source provided the LARGEST share of U.S. energy in 2021?", "options": ["Solar", "Wind", "Fossil fuels", "Geothermal"], "answer": 2, "diagnoses": {"0": "Assumes all energy sources are used in roughly equal amounts."}}, {"id": "SEV3b-A1", "form": "A", "std": "SEV3", "el": "b", "target": "Benefit of a renewable source", "stem": "Which of these is a genuine BENEFIT of solar energy?", "options": ["It works just as well at night as during the day", "It is renewable and produces little pollution while generating power", "It runs on uranium fuel", "It emits large amounts of CO₂ while generating power"], "answer": 1, "diagnoses": {"0": "Overlooks that solar output depends on sunlight/daylight."}}, {"id": "SEV3b-A2", "form": "A", "std": "SEV3", "el": "b", "target": "Renewables also have drawbacks", "stem": "A student claims renewable energy sources have no drawbacks at all. Which is a REAL drawback of a renewable source?", "options": ["Renewables truly have no drawbacks", "Solar and wind depend on weather and daylight and can affect land use and wildlife", "They release the most greenhouse gases of any source", "They run out quickly, just like fossil fuels"], "answer": 1, "diagnoses": {"0": "Believes renewable energy sources have no risks or drawbacks."}}, {"id": "SEV3b-B1", "form": "B", "std": "SEV3", "el": "b", "target": "Benefit of fossil fuels", "stem": "Which is a real BENEFIT of fossil fuels compared with many renewable sources?", "options": ["They are renewable", "They are reliable and have well-developed infrastructure for storage and transport", "They produce no pollution", "They can never be depleted"], "answer": 1, "diagnoses": {"0": "Believes fossil fuels are renewable."}}, {"id": "SEV3b-B2", "form": "B", "std": "SEV3", "el": "b", "target": "Risk of nuclear power", "stem": "Which of these is a genuine RISK of nuclear power?", "options": ["It emits large amounts of CO₂ while running", "It produces long-lived radioactive waste and can have rare but dangerous malfunctions", "It depends entirely on the weather", "It has no risks at all"], "answer": 1, "diagnoses": {"0": "Believes nuclear generation emits large amounts of CO₂."}}, {"id": "SEV3c-A1", "form": "A", "std": "SEV3", "el": "c", "target": "Renewable ≠ automatically sustainable", "stem": "Being 'renewable' does NOT automatically make an energy source 'sustainable.' Which example shows this?", "options": ["Sunlight will run out next year", "Biofuels can require monoculture farming that depletes soil and uses large amounts of land", "Wind is actually non-renewable", "Solar panels last forever and use no materials"], "answer": 1, "diagnoses": {"3": "Assumes renewable sources have no material or land costs."}}, {"id": "SEV3c-A2", "form": "A", "std": "SEV3", "el": "c", "target": "What sustainability evaluation considers", "stem": "To decide whether an energy source is sustainable, scientists should consider:", "options": ["Only how much it costs today", "Its full impact from collection to use to disposal, including environmental, economic, and social effects", "Only whether it is currently popular", "Only how modern the technology looks"], "answer": 1, "diagnoses": {"0": "Believes sustainability only concerns present-day cost/our lifetime."}}, {"id": "SEV3c-B1", "form": "B", "std": "SEV3", "el": "c", "target": "Why nuclear is judged not fully sustainable", "stem": "Despite its low emissions, why is nuclear power often judged NOT fully sustainable?", "options": ["Because it produces large amounts of CO₂", "Because it creates long-lived radioactive waste and relies on a limited supply of uranium", "Because it uses up too much sunlight", "Because it is completely harmless"], "answer": 1, "diagnoses": {"0": "Believes nuclear generation is a major CO₂ source."}}, {"id": "SEV3c-B2", "form": "B", "std": "SEV3", "el": "c", "target": "Best question for judging sustainability", "stem": "Which question best helps evaluate whether an energy plan is sustainable?", "options": ["Does the technology look modern?", "Can it be maintained long-term without seriously damaging the environment, economy, or society?", "Is it the cheapest option today, regardless of its effects?", "Do most of my friends already use it?"], "answer": 1, "diagnoses": {"2": "Judges sustainability by present cost alone, ignoring long-term effects."}}, {"id": "SEV3d-A1", "form": "A", "std": "SEV3", "el": "d", "target": "Account for local conditions in a plan", "stem": "A town in the North Georgia mountains wants to use solar power. Which local challenge must its energy plan address?", "options": ["There is never any sunlight in Georgia", "Mountains and trees can block sunlight, so panel placement must be planned carefully", "Solar panels only work next to the ocean", "Solar power cannot be used anywhere in Georgia"], "answer": 1, "diagnoses": {"3": "Assumes a source that works elsewhere cannot be adapted to local conditions."}}, {"id": "SEV3d-A2", "form": "A", "std": "SEV3", "el": "d", "target": "One plan does not fit every location", "stem": "Why won't a single energy plan work for every location in the United States?", "options": ["All locations have exactly the same resources", "Available resources and conditions (sun, wind, water, land) differ from place to place", "Only coal can be used everywhere", "Energy needs are identical everywhere"], "answer": 1, "diagnoses": {"0": "Believes all locations across the U.S. use the same energy resources."}}, {"id": "SEV3d-B1", "form": "B", "std": "SEV3", "el": "d", "target": "Weigh trade-offs of a large project", "stem": "Before building a large hydropower dam, planners should carefully consider:", "options": ["Only how tall the dam will look", "Cost, effects on biodiversity and fish migration, and flooding of inhabited land", "Nothing — large dams have no downsides", "Only the color of the reservoir water"], "answer": 1, "diagnoses": {"2": "Believes large renewable projects have no environmental or social costs."}}, {"id": "SEV3d-B2", "form": "B", "std": "SEV3", "el": "d", "target": "Features of a good local energy plan", "stem": "A good sustainable energy plan for a specific location is one that:", "options": ["Copies another country's plan exactly", "Matches reliable local resources to the area's real needs while limiting environmental and social harm", "Uses the most polluting source available", "Ignores local geography entirely"], "answer": 1, "diagnoses": {"0": "Assumes a plan can simply be copied without regard to local conditions."}}, {"id": "SEV4a-A1", "form": "A", "std": "SEV4", "el": "a", "target": "Fertilizer runoff effects", "stem": "When excess nitrogen and phosphorus fertilizer runs off farms into a lake, it often causes:", "options": ["Clearer, healthier water", "Algal blooms that lower dissolved oxygen and harm aquatic life (eutrophication)", "An increase in oxygen for fish", "No change at all to the water"], "answer": 1, "diagnoses": {"2": "Thinks nutrient runoff raises dissolved oxygen instead of depleting it."}}, {"id": "SEV4a-A2", "form": "A", "std": "SEV4", "el": "a", "target": "Human activities do affect resources", "stem": "A student says human activities do not really affect natural resources. Which example best refutes this claim?", "options": ["Human activities have no measurable effect", "Mining can cause erosion and contaminate groundwater", "Only volcanoes affect natural resources", "Natural resources are unlimited"], "answer": 1, "diagnoses": {"0": "Believes human activities do not impact natural resources.", "3": "Believes natural resources are effectively unlimited."}}, {"id": "SEV4a-B1", "form": "B", "std": "SEV4", "el": "a", "target": "Trace a cause-and-effect chain", "stem": "Nitrogen fertilizer from Midwest farms travels down the Mississippi River and helps create a low-oxygen 'dead zone' in the Gulf of Mexico. This is an example of:", "options": ["A natural process unrelated to humans", "How farming runoff can harm an aquatic ecosystem far downstream", "An improvement in Gulf water quality", "Something that only affects the farm's own soil"], "answer": 1, "diagnoses": {"3": "Believes a human activity only affects its immediate location."}}, {"id": "SEV4a-B2", "form": "B", "std": "SEV4", "el": "a", "target": "Match activity to correct impact", "stem": "Which pairing of a human activity and its impact is correct?", "options": ["Urbanization → cleaner rivers", "Urbanization → more paved surfaces and runoff that carry pollutants into waterways", "Overfishing → larger fish populations", "Deforestation → less erosion"], "answer": 1, "diagnoses": {"0": "Believes only some, obvious human activities affect resources."}}, {"id": "SEV4b-A1", "form": "A", "std": "SEV4", "el": "b", "target": "Understand ocean acidification", "stem": "Ocean acidification happens as the ocean absorbs excess CO₂, forming carbonic acid. Which statement is accurate?", "options": ["The ocean has literally turned into acid", "Ocean pH is dropping (becoming less basic), which harms shell-forming organisms", "CO₂ has no effect on ocean chemistry", "The ocean is becoming more basic"], "answer": 1, "diagnoses": {"0": "Believes ocean acidification means the ocean has become an acid."}}, {"id": "SEV4b-A2", "form": "A", "std": "SEV4", "el": "b", "target": "Green space reduces heat islands", "stem": "Adding rooftop gardens and green spaces in a city most directly helps reduce:", "options": ["The urban heat island effect", "Ocean tides", "Volcanic eruptions", "Earth's orbital tilt"], "answer": 0, "diagnoses": {"1": "Applies a local urban solution to an unrelated global/geologic process."}}, {"id": "SEV4b-B1", "form": "B", "std": "SEV4", "el": "b", "target": "Reduce photochemical smog", "stem": "Which action most directly reduces photochemical smog?", "options": ["Banning rooftop gardens", "Reducing emissions from vehicles and power plants", "Increasing overall fossil-fuel use", "Removing all trees from cities"], "answer": 1, "diagnoses": {"2": "Selects an action that increases the pollutants causing smog."}}, {"id": "SEV4b-B2", "form": "B", "std": "SEV4", "el": "b", "target": "Solutions can work (ozone example)", "stem": "A student says nothing can be done to reduce human impact on the environment. Which real example refutes this?", "options": ["Nothing humans have tried has ever worked", "Banning certain ozone-depleting chemicals (like CFCs) helped the ozone layer begin to recover", "Using more ozone-depleting chemicals helps", "Removing green spaces from cities"], "answer": 1, "diagnoses": {"0": "Believes no solutions will work to reduce human impact."}}, {"id": "SEV4c-A1", "form": "A", "std": "SEV4", "el": "c", "target": "Monoculture degrades soil", "stem": "Growing the same crop on the same land year after year (monoculture) can lead to:", "options": ["Richer soil over time", "Depleted soil nutrients and, over time, possible desertification", "Permanently high yields with no added inputs", "Greater biodiversity in the soil"], "answer": 1, "diagnoses": {"0": "Believes repeated monoculture improves soil rather than depleting it.", "2": "Believes it is easy to keep increasing food supply indefinitely."}}, {"id": "SEV4c-A2", "form": "A", "std": "SEV4", "el": "c", "target": "Trade-offs of the Green Revolution", "stem": "The Green Revolution greatly increased grain yields worldwide. What is a major TRADE-OFF of these high-yield crops?", "options": ["They require no water", "They require large amounts of fertilizer and pesticides", "They remove the need for farming altogether", "They out-produce native strains in every environment with no inputs"], "answer": 1, "diagnoses": {"3": "Believes high-yield strains always outperform native strains without added inputs."}}, {"id": "SEV4c-B1", "form": "B", "std": "SEV4", "el": "c", "target": "Purpose of GMO crops", "stem": "What is one purpose of genetically modified (GMO) crops?", "options": ["To make crops less nutritious", "To improve traits such as pest resistance, drought tolerance, or nutrition", "To guarantee that crops need no soil to grow", "To deliberately reduce the food supply"], "answer": 1, "diagnoses": {"0": "Holds a purely negative misunderstanding of what GMOs are designed to do."}}, {"id": "SEV4c-B2", "form": "B", "std": "SEV4", "el": "c", "target": "Why farmers use crop rotation", "stem": "Why do many farmers use crop rotation instead of continuous monoculture?", "options": ["To deplete the soil faster", "Because different crops use and replenish different nutrients, helping protect the soil", "Because all plants need exactly the same nutrients", "To intentionally cause desertification"], "answer": 1, "diagnoses": {"2": "Believes all crops draw the same nutrients, so rotation would make no difference."}}, {"id": "SEV5a-A1", "form": "A", "std": "SEV5", "el": "a", "target": "Compare MDCs and LDCs", "stem": "Compared with Less Developed Countries (LDCs), More Developed Countries (MDCs) generally have:", "options": ["Lower income and higher fertility rates", "Higher income (GNP) and lower total fertility rates", "Identical income and fertility rates", "No formal education systems"], "answer": 1, "diagnoses": {"0": "Reverses the relationship between development, income, and fertility."}}, {"id": "SEV5a-A2", "form": "A", "std": "SEV5", "el": "a", "target": "Education affects fertility & quality of life", "stem": "Research shows that increasing access to education, especially for women, tends to:", "options": ["Sharply raise fertility rates", "Lower fertility rates and improve quality of life", "Have no effect on population or quality of life", "Instantly eliminate all environmental impact"], "answer": 1, "diagnoses": {"2": "Believes education does not affect quality of life or population growth."}}, {"id": "SEV5a-B1", "form": "B", "std": "SEV5", "el": "a", "target": "Interpret fertility vs. replacement rate", "stem": "The replacement fertility rate for humans is about 2.1 births per woman. A total fertility rate well ABOVE 2.1 suggests that a population is:", "options": ["Shrinking", "Growing", "Perfectly stable", "Producing no children"], "answer": 1, "diagnoses": {"0": "Misreads a high fertility rate as causing population decline."}}, {"id": "SEV5a-B2", "form": "B", "std": "SEV5", "el": "a", "target": "Development is linked to human impact", "stem": "Which statement about a nation's development and its impact on the environment is best supported?", "options": ["A nation's development has no connection to its environmental impact", "Development level is connected to both quality of life and environmental impact", "Only LDCs affect the environment", "Only MDCs affect the environment"], "answer": 1, "diagnoses": {"0": "Believes the development of a nation does not affect its impact on Earth."}}, {"id": "SEV5b-A1", "form": "A", "std": "SEV5", "el": "b", "target": "When populations grow", "stem": "A population increases in size when:", "options": ["The death rate is greater than the birth rate", "The birth (fertility) rate is greater than the death (mortality) rate", "Birth and death rates are exactly equal", "No individuals are born"], "answer": 1, "diagnoses": {"0": "Reverses the relationship between birth rate, death rate, and growth."}}, {"id": "SEV5b-A2", "form": "A", "std": "SEV5", "el": "b", "target": "Read a population pyramid (wide base)", "stem": "A population pyramid shaped like a wide-based triangle usually indicates a country with:", "options": ["Low fertility and long life expectancy", "A high fertility rate with many young people", "A shrinking population made up mostly of elderly people", "An equal number at every age, with no pattern"], "answer": 1, "diagnoses": {"2": "Misinterprets a wide base (many young) as an aging, shrinking population."}}, {"id": "SEV5b-B1", "form": "B", "std": "SEV5", "el": "b", "target": "Population growth is uneven worldwide", "stem": "A student claims that all populations on Earth are growing at the same rate. Why is this incorrect?", "options": ["It is correct — growth is identical everywhere", "Growth is uneven; different countries have different fertility and mortality rates", "No populations anywhere are growing", "Only the U.S. population ever changes"], "answer": 1, "diagnoses": {"0": "Believes all populations across the world grow at the same rate."}}, {"id": "SEV5b-B2", "form": "B", "std": "SEV5", "el": "b", "target": "Read a population pyramid (rocket shape)", "stem": "A population pyramid shaped like a tall 'rocket' (fairly even width top to bottom) most likely represents a country with:", "options": ["Very high fertility and almost no elderly people", "A low fertility rate near replacement, with both young and old present", "No older people at all", "Only children and no adults"], "answer": 1, "diagnoses": {"0": "Confuses the even 'rocket' shape (low fertility) with a wide-based high-fertility pyramid."}}, {"id": "SEV5c-A1", "form": "A", "std": "SEV5", "el": "c", "target": "Industrial Revolution & resource demand", "stem": "The factories of the Industrial Revolution greatly increased demand for which resource, adding pollution to the air?", "options": ["Wind only", "Coal and other fossil fuels", "Sunlight", "None — factories used no energy"], "answer": 1, "diagnoses": {"3": "Overlooks the enormous fossil-fuel demand created by industrialization."}}, {"id": "SEV5c-A2", "form": "A", "std": "SEV5", "el": "c", "target": "Medical advances & population", "stem": "Advances in medicine (vaccines, surgery, disease control) affected human populations mainly by:", "options": ["Decreasing human life expectancy", "Increasing life expectancy and contributing to population growth", "Having no effect on population size", "Reducing the total human population"], "answer": 1, "diagnoses": {"2": "Believes technological/medical innovations do not affect population or impact."}}, {"id": "SEV5c-B1", "form": "B", "std": "SEV5", "el": "c", "target": "Agricultural innovation trade-offs", "stem": "Agricultural innovations such as tractors and chemical fertilizers allowed:", "options": ["Far less food to be grown", "More food to be grown with fewer workers, but with more fuel and land use", "Farming to stop almost entirely", "Food production with no environmental effects"], "answer": 1, "diagnoses": {"3": "Believes new technologies carry no environmental cost."}}, {"id": "SEV5c-B2", "form": "B", "std": "SEV5", "el": "c", "target": "Technology can increase impact", "stem": "A student says new technologies never increase human impact on the environment. Which example best refutes this?", "options": ["Technology has no environmental cost of any kind", "Engines and factories increased fossil-fuel use, mining, and pollution", "Technology only ever helps and never harms", "Innovations always reduce resource use to zero"], "answer": 1, "diagnoses": {"0": "Believes new technologies do not increase human impact."}}, {"id": "SEV5d-A1", "form": "A", "std": "SEV5", "el": "d", "target": "Choose an effective individual action", "stem": "Which individual action would most reduce a person's environmental impact?", "options": ["Leaving lights and devices on all day", "Biking or taking public transportation instead of driving alone", "Buying more single-use plastic products", "Throwing away items that could be reused"], "answer": 1, "diagnoses": {"0": "Selects an action that increases, rather than reduces, energy use."}}, {"id": "SEV5d-A2", "form": "A", "std": "SEV5", "el": "d", "target": "Individual actions add up", "stem": "A student says one person's choices cannot make any difference. Which idea best challenges this?", "options": ["One person truly cannot matter", "Small actions add up across many people to create large impacts", "Only governments can affect the environment", "Recycling never helps anything"], "answer": 1, "diagnoses": {"0": "Believes one person cannot make a difference.", "2": "Places all responsibility on governments, dismissing individual choices."}}, {"id": "SEV5d-B1", "form": "B", "std": "SEV5", "el": "d", "target": "Market forces shape choices", "stem": "How can market forces affect a person's ability to make sustainable choices?", "options": ["Market options and prices have no effect on people's choices", "The available options and their prices (for example, plastic vs. cardboard packaging) shape what people can realistically buy", "Every product is always available plastic-free and free of charge", "Cost never influences a purchase decision"], "answer": 1, "diagnoses": {"0": "Overlooks how market forces and cost constrain personal choices."}}, {"id": "SEV5d-B2", "form": "B", "std": "SEV5", "el": "d", "target": "Fate of improperly disposed plastics", "stem": "Plastics that are thrown away improperly often end up as:", "options": ["Clean drinking water", "Microplastics in oceans, waterways, and even food", "Useful nutrients that enrich the soil", "Harmless gases that leave no trace"], "answer": 1, "diagnoses": {"2": "Believes discarded plastics harmlessly break down into soil nutrients."}}]};
+const LET = ["A","B","C","D"];
+const STD_ORDER = ["SEV1","SEV2","SEV3","SEV4","SEV5"];
+const $ = s => document.querySelector(s);
+const el = (t,c,h)=>{const e=document.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+const esc = s => String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+function band(p){ return p>=80?"secure":(p>=50?"developing":"beginning"); }
+function bandLabel(p){ return p>=80?"Secure":(p>=50?"Developing":"Beginning"); }
+
+/* ---------- theme ---------- */
+const themeBtn=$("#themeBtn");
+themeBtn.addEventListener("click",()=>{
+  const cur=document.documentElement.getAttribute("data-theme");
+  const sysDark=window.matchMedia("(prefers-color-scheme:dark)").matches;
+  const next=(cur? cur : (sysDark?"dark":"light"))==="dark"?"light":"dark";
+  document.documentElement.setAttribute("data-theme",next);
+});
+
+/* ---------- blueprint badges ---------- */
+(function(){
+  const byStd={}; DATA.items.filter(i=>i.form==="A").forEach(i=>byStd[i.std]=(byStd[i.std]||0)+1);
+  const row=$("#blueprintBadges");
+  STD_ORDER.forEach(s=>row.appendChild(el("span","badge",esc(s)+" &middot; "+byStd[s]+" items")));
+  row.appendChild(el("span","badge","40 items &middot; ~30 min"));
+})();
+
+/* ---------- view switch ---------- */
+function show(id){
+  ["home","test","results","answerkey","analyzer"].forEach(v=>$("#"+v).classList.toggle("hidden",v!==id));
+  $("#rail").hidden = (id!=="test");
+  window.scrollTo({top:0,behavior:"instant"in window?"instant":"auto"});
+}
+
+/* ================= TEST ENGINE ================= */
+let ST=null;
+function startTest(form,meta){
+  const items=DATA.items.filter(i=>i.form===form);
+  const sections=STD_ORDER.map(std=>({std,items:items.filter(i=>i.std===std)}));
+  ST={form,meta,items,sections,cur:0,ans:{}};
+  $("#testFormLabel").innerHTML = form==="A"?"Pre-Test &middot; Form A":"Post-Test &middot; Form B";
+  renderSections(); renderDots(); gotoSection(0); updateCount();
+  show("test");
+}
+function renderSections(){
+  const host=$("#sections"); host.innerHTML="";
+  ST.sections.forEach((sec,si)=>{
+    const wrap=el("div","secblock"); wrap.dataset.si=si; if(si!==0) wrap.classList.add("hidden");
+    const head=el("div","section-head");
+    head.appendChild(el("span","std",esc(sec.std)));
+    head.appendChild(el("h2",null,esc(DATA.standards[sec.std])));
+    wrap.appendChild(head);
+    wrap.appendChild(el("div","section-desc","Section "+(si+1)+" of 5"));
+    sec.items.forEach((it,qi)=>{
+      const fs=el("fieldset","q"); fs.id="q_"+it.id;
+      const lg=el("legend");
+      lg.appendChild(el("div","qmeta","Question "+(globalIndex(it.id)+1)));
+      lg.appendChild(el("div","stem",esc(it.stem)));
+      fs.appendChild(lg);
+      it.options.forEach((op,oi)=>{
+        const lab=el("label","opt");
+        lab.innerHTML='<input type="radio" name="'+it.id+'" value="'+oi+'">'+
+          '<span class="lett">'+LET[oi]+'</span><span>'+esc(op)+'</span>';
+        lab.querySelector("input").addEventListener("change",()=>{ST.ans[it.id]=oi;updateCount();markDots();});
+        fs.appendChild(lab);
+      });
+      wrap.appendChild(fs);
+    });
+    host.appendChild(wrap);
+  });
+}
+function globalIndex(id){ return ST.items.findIndex(i=>i.id===id); }
+function renderDots(){
+  const d=$("#dots"); d.innerHTML="";
+  ST.items.forEach((it,i)=>{
+    const b=el("button","dot",(i+1)); b.type="button"; b.dataset.id=it.id;
+    b.title="Question "+(i+1);
+    b.addEventListener("click",()=>{ const si=STD_ORDER.indexOf(it.std); gotoSection(si);
+      setTimeout(()=>{const q=$("#q_"+it.id); if(q)q.scrollIntoView({behavior:"smooth",block:"center"});},60); });
+    d.appendChild(b);
+  });
+  markDots();
+}
+function markDots(){
+  document.querySelectorAll("#dots .dot").forEach(b=>{ b.classList.toggle("done", ST.ans[b.dataset.id]!=null);
+    const it=ST.items.find(i=>i.id===b.dataset.id);
+    b.classList.toggle("current", STD_ORDER.indexOf(it.std)===ST.cur); });
+}
+function gotoSection(si){
+  ST.cur=Math.max(0,Math.min(ST.sections.length-1,si));
+  document.querySelectorAll(".secblock").forEach(b=>b.classList.toggle("hidden",+b.dataset.si!==ST.cur));
+  $("#prevBtn").disabled=ST.cur===0;
+  $("#nextBtn").classList.toggle("hidden",ST.cur===ST.sections.length-1);
+  markDots(); updateFill();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function updateFill(){ $("#fill").style.width=((ST.cur+1)/ST.sections.length*100)+"%"; }
+function updateCount(){
+  const n=Object.keys(ST.ans).length, t=ST.items.length;
+  $("#answered").textContent=n+" / "+t+" answered";
+}
+$("#prevBtn").addEventListener("click",()=>gotoSection(ST.cur-1));
+$("#nextBtn").addEventListener("click",()=>gotoSection(ST.cur+1));
+$("#startBtn").addEventListener("click",()=>{
+  const name=$("#stuName").value.trim();
+  if(!name){ $("#stuName").focus(); $("#stuName").style.borderColor="var(--crit)"; return; }
+  const form=document.querySelector('input[name="form"]:checked').value;
+  startTest(form,{name,cls:$("#stuClass").value.trim(),id:$("#stuId").value.trim()});
+});
+$("#submitBtn").addEventListener("click",()=>{
+  const un=ST.items.length-Object.keys(ST.ans).length;
+  if(un>0 && !confirm(un+" question(s) are still blank. Submit anyway? Blank answers count as not yet mastered.")) return;
+  showResults(score(ST.form,ST.ans,ST.meta));
+});
+
+/* ================= SCORING ================= */
+function score(form,ans,meta){
+  const items=DATA.items.filter(i=>i.form===form);
+  let correct=0; const byStd={}, byEl={}, misc={}, perItem=[];
+  STD_ORDER.forEach(s=>byStd[s]={c:0,t:0});
+  items.forEach(it=>{
+    const key=it.std+it.el; byEl[key]=byEl[key]||{c:0,t:0,target:it.target};
+    const sel=ans[it.id]; const ok=sel===it.answer;
+    byStd[it.std].t++; byEl[key].t++;
+    if(ok){correct++;byStd[it.std].c++;byEl[key].c++;}
+    else if(sel!=null && it.diagnoses[String(sel)]){
+      const m=it.diagnoses[String(sel)]; misc[m]=misc[m]||{n:0,std:it.std,el:it.el}; misc[m].n++;
+    }
+    perItem.push({id:it.id,std:it.std,el:it.el,ok,sel,answer:it.answer,blank:sel==null});
+  });
+  return {form,meta,correct,total:items.length,byStd,byEl,misc,perItem,
+          pct:Math.round(correct/items.length*100)};
+}
+
+/* ================= RESULTS VIEW ================= */
+function showResults(R){
+  const host=$("#results"); host.innerHTML="";
+  const pre=R.form==="A";
+  host.appendChild(el("div","report-head",
+    '<div class="eyebrow">'+(pre?"Pre-Test &middot; Form A &middot; Diagnostic":"Post-Test &middot; Form B &middot; Semester")+'</div>'+
+    '<h2 style="font-size:1.6rem">'+esc(R.meta.name||"Results")+
+    (R.meta.cls?' &middot; <span class="muted" style="font-size:1rem">'+esc(R.meta.cls)+'</span>':'')+'</h2>'));
+
+  // scorecard + per-standard
+  const sc=el("div"); const card=el("div","scorecard");
+  const ring=el("div","ring"); ring.style.setProperty("--p",R.pct);
+  ring.innerHTML='<div class="inner"><div><div class="pct tnum">'+R.pct+'%</div><div class="cap">'+R.correct+' / '+R.total+'</div></div></div>';
+  card.appendChild(ring);
+  const stdWrap=el("div"); stdWrap.style.flex="1"; stdWrap.style.minWidth="280px";
+  STD_ORDER.forEach(s=>{
+    const o=R.byStd[s], p=Math.round(o.c/o.t*100), bd=band(p);
+    const row=el("div","std-row");
+    row.innerHTML='<div class="lab"><div class="code">'+s+' &middot; '+o.c+'/'+o.t+'</div>'+
+      '<div class="name">'+esc(DATA.standards[s])+'</div></div>'+
+      '<div class="meter"><span class="fill '+bd+'" style="width:'+p+'%"></span></div>'+
+      '<span class="band '+bd+'">'+bandLabel(p)+'</span>';
+    stdWrap.appendChild(row);
+  });
+  card.appendChild(stdWrap); sc.appendChild(card); host.appendChild(sc);
+
+  // student-facing framing
+  const focus=STD_ORDER.filter(s=>R.byStd[s].c/R.byStd[s].t<0.5);
+  const strong=STD_ORDER.filter(s=>R.byStd[s].c/R.byStd[s].t>=0.8);
+  const p=el("div","panel");
+  if(pre){
+    p.innerHTML='<h3>What this means</h3><p class="muted" style="font-size:.92rem;margin:4px 0 0">'+
+      'This is a pre-test &mdash; it does not count as a grade. It shows your teacher which topics to spend more time on for you. '+
+      (strong.length?('You already show strength in <b>'+strong.join(", ")+'</b>. '):'')+
+      (focus.length?('The class will build up <b>'+focus.join(", ")+'</b> together this semester.'):'You are off to a strong start across the board.')+'</p>';
+  } else {
+    p.innerHTML='<h3>Where you landed</h3><p class="muted" style="font-size:.92rem;margin:4px 0 0">'+
+      'Overall mastery: <b>'+bandLabel(R.pct)+'</b>. '+
+      (strong.length?('Secure standards: <b>'+strong.join(", ")+'</b>. '):'')+
+      (focus.length?('Keep reviewing: <b>'+focus.join(", ")+'</b>.'):'Strong finish across every standard.')+
+      ' Compare with your pre-test to see your growth.</p>';
+  }
+  host.appendChild(p);
+  host.appendChild(bandKey());
+
+  // result code + exports
+  const code=encodeResult(R);
+  const exp=el("div","panel export-row");
+  exp.innerHTML='<h3>Submit your results</h3>'+
+    '<p class="muted" style="font-size:.88rem;margin:4px 0 8px">Copy this result code and turn it in the way your teacher asked (paste into the assignment, form, or shared doc). It lets your teacher build the class report.</p>'+
+    '<div class="codebox" id="codeBox">'+code+'</div>';
+  const brow=el("div","btnrow"); brow.style.marginTop="12px";
+  brow.appendChild(mkBtn("Copy result code","btn sm",()=>copy(code)));
+  brow.appendChild(mkBtn("Download CSV","btn ghost sm",()=>downloadCSV(R)));
+  brow.appendChild(mkBtn("Print / Save PDF","btn ghost sm",()=>window.print()));
+  brow.appendChild(mkBtn("Home","btn ghost sm",()=>show("home")));
+  exp.appendChild(brow); host.appendChild(exp);
+
+  // TEACHER detail
+  const det=el("details","teacher");
+  det.appendChild(el("summary",null,"Teacher detail &mdash; element breakdown, misconceptions, item map"));
+  const inner=el("div"); inner.style.padding="0 20px 20px";
+  // element table
+  inner.appendChild(el("h3",null,"Mastery by element"));
+  inner.lastChild.style.margin="6px 0 4px"; inner.lastChild.style.fontSize="1rem";
+  const tw=el("div","tablewrap"); const tb=el("table");
+  tb.innerHTML="<thead><tr><th>Element</th><th>Target</th><th class='tnum'>Score</th><th>Band</th></tr></thead>";
+  const tbody=el("tbody");
+  Object.keys(DATA.elements).forEach(k=>{
+    if(!R.byEl[k])return; const o=R.byEl[k], pp=Math.round(o.c/o.t*100), bd=band(pp);
+    const tr=el("tr");
+    tr.innerHTML="<td><b>"+k+"</b></td><td>"+esc(o.target)+"</td><td class='tnum'>"+o.c+"/"+o.t+
+      "</td><td><span class='cellband "+bd+"'>"+pp+"%</span></td>";
+    tbody.appendChild(tr);
+  });
+  tb.appendChild(tbody); tw.appendChild(tb); inner.appendChild(tw);
+  // misconceptions
+  inner.appendChild(el("h3",null,"Misconceptions to address"));
+  inner.lastChild.style.margin="18px 0 4px"; inner.lastChild.style.fontSize="1rem";
+  const mk=Object.keys(R.misc);
+  if(mk.length){
+    mk.sort((a,b)=>R.misc[b].n-R.misc[a].n).forEach(m=>{
+      const mr=el("div","miscrow");
+      mr.innerHTML='<span class="freq">'+R.misc[m].std+R.misc[m].el+'</span><span>'+esc(m)+'</span>';
+      inner.appendChild(mr);
+    });
+  } else { inner.appendChild(el("p","muted","No keyed misconceptions were triggered. Any misses were blanks or non-diagnostic distractors.")); }
+  det.appendChild(inner); host.appendChild(det);
+
+  show("results");
+}
+function bandKey(){
+  const k=el("div","legend-key");
+  k.innerHTML='<span><b style="color:var(--good)">Secure</b> &ge;80%</span>'+
+    '<span><b style="color:var(--warn)">Developing</b> 50&ndash;79%</span>'+
+    '<span><b style="color:var(--crit)">Beginning</b> &lt;50%</span>';
+  return k;
+}
+function mkBtn(label,cls,fn){ const b=el("button",cls,label); b.type="button"; b.addEventListener("click",fn); return b; }
+function copy(t){ navigator.clipboard&&navigator.clipboard.writeText(t).then(()=>toast("Copied result code")).catch(()=>fallbackCopy(t)); }
+function fallbackCopy(t){ const ta=el("textarea"); ta.value=t; document.body.appendChild(ta); ta.select();
+  try{document.execCommand("copy");toast("Copied");}catch(e){} ta.remove(); }
+let toastT; function toast(m){ let x=$("#toast"); if(!x){x=el("div");x.id="toast";
+  x.style.cssText="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--primary);color:var(--primary-ink);padding:10px 18px;border-radius:20px;font-size:.85rem;z-index:60;box-shadow:var(--shadow)";document.body.appendChild(x);}
+  x.textContent=m; x.style.opacity="1"; clearTimeout(toastT); toastT=setTimeout(()=>x.style.opacity="0",1400); }
+
+/* ---------- encode / decode ---------- */
+function encodeResult(R){
+  const payload={v:1,f:R.form,n:R.meta.name,c:R.meta.cls,i:R.meta.id,
+    a:{}}; R.perItem.forEach(p=>{payload.a[p.id]=p.blank?-1:p.sel});
+  const json=JSON.stringify(payload);
+  return "ENV-"+btoa(unescape(encodeURIComponent(json)));
+}
+function decodeResult(code){
+  try{ const b=code.trim().replace(/^ENV-/,""); const json=decodeURIComponent(escape(atob(b)));
+    const p=JSON.parse(json); if(!p.a)return null; return p; }catch(e){ return null; }
+}
+function downloadCSV(R){
+  let rows=[["item","standard","element","selected","correct","result"]];
+  R.perItem.forEach(p=>rows.push([p.id,p.std,p.std+p.el,p.blank?"blank":LET[p.sel],LET[p.answer],p.ok?"correct":"incorrect"]));
+  let summary=[["","","","","",""],["SUMMARY","standard","score","percent","band",""]];
+  STD_ORDER.forEach(s=>{const o=R.byStd[s],pp=Math.round(o.c/o.t*100);summary.push(["",s,o.c+"/"+o.t,pp+"%",bandLabel(pp),""]);});
+  summary.push(["","OVERALL",R.correct+"/"+R.total,R.pct+"%",bandLabel(R.pct),""]);
+  const csv=rows.concat(summary).map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")).join("\n");
+  const blob=new Blob([csv],{type:"text/csv"}); const a=el("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=(R.meta.name||"student").replace(/[^a-z0-9]+/gi,"_")+"_"+(R.form==="A"?"pretest":"posttest")+".csv";
+  a.click(); URL.revokeObjectURL(a.href);
+}
+
+/* ================= ANSWER KEY ================= */
+$("#keyBtn").addEventListener("click",renderKey);
+function renderKey(){
+  const host=$("#answerkey"); host.innerHTML="";
+  host.appendChild(el("div","report-head",
+    '<div class="eyebrow">Teacher reference</div><h2 style="font-size:1.6rem">Answer key &amp; standards alignment</h2>'+
+    '<p class="muted" style="margin:6px 0 0">Both parallel forms. Form&nbsp;A is the pre-test; Form&nbsp;B is the matched post-test.</p>'));
+  const brow=el("div","btnrow"); brow.style.margin="14px 0";
+  brow.appendChild(mkBtn("Print / Save PDF","btn ghost sm",()=>window.print()));
+  brow.appendChild(mkBtn("Home","btn ghost sm",()=>show("home")));
+  host.appendChild(brow);
+  ["A","B"].forEach(f=>{
+    const pan=el("div","panel");
+    pan.appendChild(el("h3",null,(f==="A"?"Form A &mdash; Pre-Test":"Form B &mdash; Post-Test")));
+    const tw=el("div","tablewrap"); const tb=el("table");
+    tb.innerHTML="<thead><tr><th>#</th><th>Std</th><th>Elem</th><th>Key</th><th>Learning target</th></tr></thead>";
+    const body=el("tbody");
+    DATA.items.filter(i=>i.form===f).forEach((it,idx)=>{
+      const tr=el("tr");
+      tr.innerHTML="<td class='tnum'>"+(idx+1)+"</td><td>"+it.std+"</td><td>"+it.std+it.el+
+        "</td><td class='ok'>"+LET[it.answer]+"</td><td>"+esc(it.target)+"</td>";
+      body.appendChild(tr);
+    });
+    tb.appendChild(body); tw.appendChild(tb); pan.appendChild(tw); host.appendChild(pan);
+  });
+  show("answerkey");
+}
+
+/* ================= CLASS ANALYZER ================= */
+$("#analyzeBtn").addEventListener("click",renderAnalyzer);
+function renderAnalyzer(){
+  const host=$("#analyzer"); host.innerHTML="";
+  host.appendChild(el("div","report-head",
+    '<div class="eyebrow">Teacher tool</div><h2 style="font-size:1.6rem">Class data analyzer</h2>'+
+    '<p class="muted" style="margin:6px 0 0">Paste one result code per line (from your students\' submissions). '+
+    'The report groups by standard so you can form instruction groups &mdash; and, on post-test day, see growth.</p>'));
+  const pan=el("div","panel");
+  pan.innerHTML='<h3>Paste result codes</h3><p class="muted" style="font-size:.85rem;margin:4px 0 8px">'+
+    'One per line. Mix pre- and post-test codes freely &mdash; they are grouped by form.</p>';
+  const ta=el("textarea"); ta.id="codes"; ta.placeholder="ENV-...\nENV-...\nENV-...";
+  pan.appendChild(ta);
+  const brow=el("div","btnrow"); brow.style.marginTop="12px";
+  brow.appendChild(mkBtn("Build class report","btn sm",runAnalyzer));
+  brow.appendChild(mkBtn("Home","btn ghost sm",()=>show("home")));
+  pan.appendChild(brow); host.appendChild(pan);
+  host.appendChild(el("div",null)).id="analyzerOut";
+  show("analyzer");
+}
+function runAnalyzer(){
+  const out=$("#analyzerOut"); out.innerHTML="";
+  const lines=$("#codes").value.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const subs=lines.map(decodeResult).filter(Boolean);
+  if(!subs.length){ out.appendChild(el("div","note","No valid result codes found. Codes start with <b>ENV-</b>.")); return; }
+  ["A","B"].forEach(form=>{
+    const group=subs.filter(s=>s.f===form); if(!group.length)return;
+    const scored=group.map(s=>{
+      const ans={}; Object.keys(s.a).forEach(k=>{ if(s.a[k]>=0) ans[k]=s.a[k]; });
+      return score(form,ans,{name:s.n,cls:s.c,id:s.i});
+    });
+    out.appendChild(analyzerBlock(form,scored));
+  });
+}
+function analyzerBlock(form,scored){
+  const wrap=el("div");
+  wrap.appendChild(el("div","report-head",
+    '<h2 style="font-size:1.3rem;margin-top:18px">'+(form==="A"?"Pre-Test &middot; Form A":"Post-Test &middot; Form B")+
+    ' <span class="muted" style="font-size:.95rem">&middot; '+scored.length+' student'+(scored.length>1?"s":"")+'</span></h2>'));
+
+  // class averages by standard
+  const avg={}; STD_ORDER.forEach(s=>{let c=0,t=0;scored.forEach(r=>{c+=r.byStd[s].c;t+=r.byStd[s].t;});avg[s]={c,t,p:Math.round(c/t*100)};});
+  const clsPct=Math.round(scored.reduce((a,r)=>a+r.pct,0)/scored.length);
+  const p1=el("div","panel");
+  p1.appendChild(el("h3",null,"Class average by standard"));
+  const sw=el("div"); sw.style.marginTop="6px";
+  STD_ORDER.forEach(s=>{const bd=band(avg[s].p);const row=el("div","std-row");
+    row.innerHTML='<div class="lab"><div class="code">'+s+'</div><div class="name">'+esc(DATA.standards[s])+'</div></div>'+
+      '<div class="meter"><span class="fill '+bd+'" style="width:'+avg[s].p+'%"></span></div>'+
+      '<span class="band '+bd+'">'+avg[s].p+'%</span>';
+    sw.appendChild(row);});
+  p1.appendChild(sw);
+  p1.appendChild(el("p","muted","Class overall: <b>"+clsPct+"%</b> &middot; "+bandLabel(clsPct)));
+  p1.lastChild.style.marginTop="10px";
+  wrap.appendChild(p1);
+
+  // heatmap roster
+  const p2=el("div","panel"); p2.appendChild(el("h3",null,"Student &times; standard heatmap"));
+  const tw=el("div","tablewrap"); const tb=el("table");
+  tb.innerHTML="<thead><tr><th>Student</th><th>Class</th><th class='tnum'>Overall</th>"+
+    STD_ORDER.map(s=>"<th class='tnum'>"+s+"</th>").join("")+"</tr></thead>";
+  const body=el("tbody");
+  scored.sort((a,b)=>a.pct-b.pct).forEach(r=>{
+    let cells=STD_ORDER.map(s=>{const pp=Math.round(r.byStd[s].c/r.byStd[s].t*100);
+      return "<td class='tnum'><span class='cellband "+band(pp)+"'>"+pp+"</span></td>";}).join("");
+    const tr=el("tr");
+    tr.innerHTML="<td><b>"+esc(r.meta.name||"—")+"</b></td><td class='muted'>"+esc(r.meta.cls||"")+"</td>"+
+      "<td class='tnum'><span class='cellband "+band(r.pct)+"'>"+r.pct+"</span></td>"+cells;
+    body.appendChild(tr);
+  });
+  tb.appendChild(body); tw.appendChild(tb); p2.appendChild(tw);
+  p2.appendChild(bandKey()); wrap.appendChild(p2);
+
+  // reteaching groups (beginning band per standard)
+  const p3=el("div","panel"); p3.appendChild(el("h3",null,"Suggested reteaching groups"));
+  p3.appendChild(el("p","muted","Students scoring in the Beginning band (&lt;50%) for each standard &mdash; ready-made small groups."));
+  p3.lastChild.style.margin="4px 0 8px";
+  let any=false;
+  STD_ORDER.forEach(s=>{
+    const names=scored.filter(r=>r.byStd[s].c/r.byStd[s].t<0.5).map(r=>r.meta.name||"—");
+    if(names.length){any=true;const row=el("div","miscrow");
+      row.innerHTML='<span class="freq">'+s+'</span><span><b>'+esc(DATA.standards[s])+'</b><br><span class="muted">'+names.map(esc).join(", ")+'</span></span>';
+      p3.appendChild(row);}
+  });
+  if(!any)p3.appendChild(el("p","muted","No standard has students in the Beginning band. Consider enrichment/extension."));
+  wrap.appendChild(p3);
+
+  // item analysis (hardest items)
+  const p4=el("div","panel"); p4.appendChild(el("h3",null,"Item analysis"));
+  p4.appendChild(el("p","muted","Percent of students correct per item (p-value). Low values flag class-wide gaps."));
+  p4.lastChild.style.margin="4px 0 8px";
+  const items=DATA.items.filter(i=>i.form===form);
+  const stats=items.map(it=>{let c=0;scored.forEach(r=>{const pi=r.perItem.find(x=>x.id===it.id);if(pi&&pi.ok)c++;});
+    return {it,p:Math.round(c/scored.length*100)};});
+  stats.sort((a,b)=>a.p-b.p);
+  const tw2=el("div","tablewrap"); const tb2=el("table");
+  tb2.innerHTML="<thead><tr><th>Item</th><th>Elem</th><th>Target</th><th class='tnum'>% correct</th></tr></thead>";
+  const bd2=el("tbody");
+  stats.forEach(s=>{const tr=el("tr");
+    tr.innerHTML="<td>"+s.it.id+"</td><td>"+s.it.std+s.it.el+"</td><td>"+esc(s.it.target)+
+      "</td><td class='tnum'><span class='cellband "+band(s.p)+"'>"+s.p+"%</span></td>";
+    bd2.appendChild(tr);});
+  tb2.appendChild(bd2); tw2.appendChild(tb2); p4.appendChild(tw2); wrap.appendChild(p4);
+
+  // misconception frequency
+  const p5=el("div","panel"); p5.appendChild(el("h3",null,"Most common misconceptions"));
+  const freq={};
+  scored.forEach(r=>Object.keys(r.misc).forEach(m=>{freq[m]=freq[m]||{n:0,tag:r.misc[m].std+r.misc[m].el};freq[m].n+=r.misc[m].n;}));
+  const keys=Object.keys(freq).sort((a,b)=>freq[b].n-freq[a].n);
+  if(keys.length){ keys.forEach(m=>{const row=el("div","miscrow");
+    row.innerHTML='<span class="freq">'+freq[m].n+'&times;</span><span><span class="muted" style="font-weight:700">'+freq[m].tag+'</span> &mdash; '+esc(m)+'</span>';
+    p5.appendChild(row);}); }
+  else p5.appendChild(el("p","muted","No keyed misconceptions triggered across this group."));
+  wrap.appendChild(p5);
+  return wrap;
+}
+
+/* boot */
+show("home");
+</script>
+
+</body>
+</html>

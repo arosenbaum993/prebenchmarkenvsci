@@ -12,10 +12,18 @@ instruction across an 18-week semester and to measure learning at the end.
   misconception from the GaDOE Environmental Science Teacher Notes ("potential initial
   student ideas"), so the report tells you **what to reteach and to whom** — not just a score.
 
+## Live link
+
+Once GitHub Pages is enabled (Settings → Pages → Deploy from `main`, folder `/root`),
+the test is available at:
+
+**https://arosenbaum993.github.io/prebenchmarkenvsci/**
+
 ## What's here
 
 | File | What it is |
 |---|---|
+| **`index.html`** | Same as `assessment.html`; lets the GitHub Pages / host site root open the test directly. |
 | **`assessment.html`** | The complete, self-contained online test. Open in any browser or upload to Google Sites / an LMS. Auto-scores, shows a per-standard diagnostic report, exports results, and includes teacher tools (answer key + **class data analyzer**). No internet, accounts, or plugins required. |
 | **`TEACHER_GUIDE.md`** | Answer key, standards/element alignment, mastery bands, the full **misconception map**, and how to turn pre-test data into a semester plan and reteaching groups. |
 | **`ITEM_BANK.md`** | Clean printable copy of both forms (for paper use or importing into Google Forms). |
