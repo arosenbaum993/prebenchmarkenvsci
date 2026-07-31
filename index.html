@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Environmental Science Benchmark &middot; GSE 26.06110</title>
+<style>
+:root{
+  --bg:#f4f6f8; --panel:#ffffff; --panel2:#eef2f6; --ink:#16202b; --muted:#5a6b7b;
+  --line:#d6dee6; --brand:#0f7a5a; --brand-ink:#ffffff; --accent:#1266b5;
+  --flag:#c8791b; --good:#2e8b57; --warn:#d9a125; --bad:#c94436; --focus:#1266b5;
+  --shadow:0 1px 3px rgba(16,32,43,.08),0 6px 18px rgba(16,32,43,.06);
+  --radius:12px;
+}
+:root[data-theme="dark"]{
+  --bg:#0e1418; --panel:#161f26; --panel2:#1e2a33; --ink:#e6edf3; --muted:#9db0c0;
+  --line:#2b3a45; --brand:#2ea27a; --brand-ink:#04150f; --accent:#5aa9ea;
+  --flag:#e0a54a; --good:#4cc38a; --warn:#e2b53d; --bad:#f0705f; --focus:#5aa9ea;
+  --shadow:0 1px 3px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.35);
+}
+@media (prefers-color-scheme: dark){
+  :root[data-theme="auto"]{
+    --bg:#0e1418; --panel:#161f26; --panel2:#1e2a33; --ink:#e6edf3; --muted:#9db0c0;
+    --line:#2b3a45; --brand:#2ea27a; --brand-ink:#04150f; --accent:#5aa9ea;
+    --flag:#e0a54a; --good:#4cc38a; --warn:#e2b53d; --bad:#f0705f; --focus:#5aa9ea;
+    --shadow:0 1px 3px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:16px 18px 64px}
+h1,h2,h3{line-height:1.25;margin:.2em 0 .4em}
+a{color:var(--accent)}
+.hidden{display:none !important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+
+/* Header */
+header.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+.brand .dot{width:26px;height:26px;border-radius:8px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-size:16px}
+.brand small{display:block;font-weight:600;color:var(--muted);font-size:12px;letter-spacing:.3px}
+.spacer{flex:1}
+.iconbtn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:8px 12px;font-weight:600;display:inline-flex;gap:6px;align-items:center}
+.iconbtn:hover{border-color:var(--brand)}
+
+/* Cards / controls */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin:18px 0}
+label.fld{display:block;margin:14px 0}
+label.fld > span{display:block;font-weight:700;margin-bottom:6px}
+input[type=text],input[type=url],input[type=password],select,textarea{
+  width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--ink);font:inherit}
+textarea{min-height:120px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+.row > *{flex:1;min-width:180px}
+.btn{background:var(--brand);color:var(--brand-ink);border:1px solid transparent;border-radius:10px;padding:12px 20px;font-weight:800;font-size:16px}
+.btn:hover{filter:brightness(1.05)}
+.btn.secondary{background:var(--panel2);color:var(--ink);border-color:var(--line)}
+.btn.ghost{background:transparent;color:var(--accent);border-color:var(--line)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);font-size:12px;font-weight:700;color:var(--muted)}
+.note{font-size:13px;color:var(--muted)}
+.err{color:var(--bad);font-weight:700;font-size:14px;margin-top:8px}
+
+/* Segmented choice */
+fieldset.seg{border:0;padding:0;margin:14px 0}
+fieldset.seg legend{font-weight:700;margin-bottom:8px;padding:0}
+.segbtns{display:flex;gap:10px;flex-wrap:wrap}
+.segbtns label{flex:1;min-width:160px;border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--panel2);display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.segbtns label:hover{border-color:var(--brand)}
+.segbtns input{margin-top:3px}
+.segbtns label.on{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}
+.segbtns b{display:block}
+.segbtns small{color:var(--muted)}
+
+/* Test screen */
+.testbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.progwrap{flex:1;min-width:160px}
+.progtrack{height:10px;background:var(--panel2);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.progfill{height:100%;background:var(--brand);width:0%;transition:width .2s ease}
+.qmeta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:13px;font-weight:700}
+.qstem{font-size:19px;font-weight:700;margin:6px 0 16px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:13px 14px;background:var(--panel2);cursor:pointer}
+.opt:hover{border-color:var(--brand)}
+.opt.sel{border-color:var(--brand);box-shadow:inset 0 0 0 2px var(--brand);background:color-mix(in srgb,var(--brand) 10%,var(--panel2))}
+.opt .ltr{flex:0 0 28px;height:28px;border-radius:8px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font-weight:800}
+.opt.sel .ltr{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.opt input{position:absolute;opacity:0;width:1px;height:1px}
+.testnav{display:flex;gap:10px;justify-content:space-between;margin-top:20px;flex-wrap:wrap}
+.flagbtn{border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:10px;padding:9px 14px;font-weight:700}
+.flagbtn.on{border-color:var(--flag);color:var(--flag);box-shadow:inset 0 0 0 1px var(--flag)}
+
+/* Navigator grid */
+.navgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:8px;margin-top:8px}
+.navcell{aspect-ratio:1;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--ink);font-weight:700;font-size:13px;position:relative}
+.navcell.answered{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.navcell.current{outline:3px solid var(--accent);outline-offset:1px}
+.navcell.flag::after{content:"";position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:var(--flag)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.swatch{width:14px;height:14px;border-radius:4px;border:1px solid var(--line);display:inline-block}
+
+/* Results */
+.scorehead{display:flex;gap:20px;flex-wrap:wrap;align-items:center}
+.scoredial{flex:0 0 auto;width:150px;height:150px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--brand) var(--deg,0deg),var(--panel2) 0);position:relative}
+.scoredial .inner{width:118px;height:118px;border-radius:50%;background:var(--panel);display:grid;place-items:center;text-align:center}
+.scoredial .pct{font-size:30px;font-weight:800}
+.levelbadge{font-size:20px;font-weight:800;padding:8px 16px;border-radius:999px;display:inline-block}
+.domlist{margin-top:8px}
+.dombar{margin:12px 0}
+.dombar .lab{display:flex;justify-content:space-between;font-weight:700;font-size:14px;margin-bottom:4px}
+.dombar .track{height:14px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);overflow:hidden}
+.dombar .fill{height:100%}
+
+/* Tabs (teacher) */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:16px}
+.tab{border:1px solid var(--line);border-bottom:none;background:var(--panel2);color:var(--ink);padding:9px 14px;border-radius:10px 10px 0 0;font-weight:700;font-size:14px}
+.tab.on{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+th{background:var(--panel2);position:sticky;top:0}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.heat td.h{font-weight:800;text-align:center;color:#0b1a12}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:8px}
+.kpi{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px}
+.kpi b{display:block;font-size:26px}
+.kpi span{color:var(--muted);font-size:13px;font-weight:700}
+.codebox{position:relative}
+.codebox pre{background:#0b1116;color:#d6e4ee;padding:16px;border-radius:10px;overflow:auto;max-height:340px;font-size:12.5px;line-height:1.45}
+.copybtn{position:absolute;top:10px;right:10px}
+.delta-pos{color:var(--good);font-weight:800}
+.delta-neg{color:var(--bad);font-weight:800}
+.tag{font-size:11px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--muted);font-weight:700}
+footer.foot{max-width:880px;margin:24px auto 0;padding:16px 18px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line)}
+@media (max-width:560px){
+  .qstem{font-size:17px}
+  .scoredial{width:120px;height:120px}
+  .scoredial .inner{width:92px;height:92px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="dot" aria-hidden="true">&#127807;</span>
+    <span>Environmental Science Benchmark<small>Georgia GSE 26.06110 &middot; SEV1&ndash;SEV5</small></span>
+  </div>
+  <span class="spacer"></span>
+  <button class="iconbtn" id="themeBtn" type="button" aria-label="Toggle light or dark theme"><span id="themeIcon" aria-hidden="true">&#9681;</span><span id="themeTxt">Theme</span></button>
+  <button class="iconbtn" id="teacherBtn" type="button">&#128274; Teacher</button>
+</header>
+
+<main class="wrap" id="main">
+
+  <!-- ================= START ================= -->
+  <section id="start" aria-labelledby="startH">
+    <div class="card">
+      <h1 id="startH">Semester Benchmark &mdash; Environmental Science</h1>
+      <p class="note">This is a 40-question multiple-choice benchmark aligned to the Georgia Standards of Excellence for Environmental Science (course 26.06110), standards SEV1&ndash;SEV5. Answer every question &mdash; you can move back and forth and change answers until you submit.</p>
+      <div class="row">
+        <label class="fld"><span>Student name</span>
+          <input type="text" id="sName" autocomplete="off" placeholder="First and last name"></label>
+        <label class="fld"><span>Class period</span>
+          <input type="text" id="sPeriod" autocomplete="off" placeholder="e.g., 3rd"></label>
+      </div>
+      <fieldset class="seg">
+        <legend>Which benchmark are you taking?</legend>
+        <div class="segbtns" id="formPick">
+          <label data-form="Pre"><input type="radio" name="form" value="Pre"><span><b>Pre-Test</b><small>Beginning of the unit / semester (Form A)</small></span></label>
+          <label data-form="Post"><input type="radio" name="form" value="Post"><span><b>Post-Test</b><small>End of the unit / semester (Form B)</small></span></label>
+        </div>
+      </fieldset>
+      <div id="startErr" class="err hidden"></div>
+      <div style="margin-top:16px"><button class="btn" id="beginBtn" type="button">Begin benchmark &rarr;</button></div>
+    </div>
+    <p class="note" style="text-align:center">Your progress is saved on this device automatically. Results are private to your teacher.</p>
+  </section>
+
+  <!-- ================= TEST ================= -->
+  <section id="test" class="hidden" aria-labelledby="testH">
+    <h2 id="testH" class="sr-only">Benchmark questions</h2>
+    <div class="card">
+      <div class="testbar">
+        <div class="qmeta"><span id="qCounter">Question 1 of 40</span></div>
+        <div class="progwrap"><div class="progtrack"><div class="progfill" id="progFill"></div></div></div>
+        <button class="flagbtn" id="flagBtn" type="button" aria-pressed="false">&#9873; Flag</button>
+      </div>
+      <div id="qStem" class="qstem"></div>
+      <div class="opts" id="qOpts" role="radiogroup" aria-label="Answer choices"></div>
+      <div class="testnav">
+        <button class="btn secondary" id="prevBtn" type="button">&larr; Back</button>
+        <div style="display:flex;gap:10px">
+          <button class="btn ghost" id="navToggle" type="button" aria-expanded="true">Question navigator</button>
+          <button class="btn" id="nextBtn" type="button">Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="navCard">
+      <h3 style="margin-top:0">Question navigator</h3>
+      <div class="navgrid" id="navGrid"></div>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--brand)"></i> Answered</span>
+        <span><i class="swatch" style="background:var(--panel2)"></i> Not answered</span>
+        <span><i class="swatch" style="background:var(--flag)"></i> Flagged for review</span>
+      </div>
+      <div style="margin-top:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center">
+        <span class="note" id="answeredCount">0 of 40 answered</span>
+        <button class="btn" id="submitBtn" type="button">Review &amp; submit &#10003;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RESULTS ================= -->
+  <section id="results" class="hidden" aria-labelledby="resH">
+    <div class="card">
+      <h1 id="resH">Your Benchmark Results</h1>
+      <p class="note" id="resWho"></p>
+      <div class="scorehead">
+        <div class="scoredial" id="dial"><div class="inner"><div><div class="pct" id="resPct">0%</div><div class="note" id="resScore">0 / 40</div></div></div></div>
+        <div>
+          <div class="note" style="margin-bottom:6px">Projected achievement level</div>
+          <div class="levelbadge" id="resLevel">&mdash;</div>
+          <p class="note" id="resLevelNote" style="max-width:420px;margin-top:10px"></p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>How you did by domain</h2>
+      <p class="note">These are the five Environmental Science standards this benchmark measures. Use them to see your strengths and where to focus.</p>
+      <div class="domlist" id="domList"></div>
+    </div>
+    <div class="card" id="postSubmitNote"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn secondary" id="doneBtn" type="button">Return to start</button>
+    </div>
+  </section>
+
+  <!-- ================= TEACHER ================= -->
+  <section id="teacher" class="hidden" aria-labelledby="teachH">
+    <!-- Login gate -->
+    <div class="card" id="teachLogin">
+      <h1 id="teachH">Teacher Dashboard</h1>
+      <p class="note">Enter the teacher passcode to view class data. Student devices never see this screen unless the passcode is entered.</p>
+      <label class="fld" style="max-width:320px"><span>Passcode</span>
+        <input type="password" id="teachPass" autocomplete="off"></label>
+      <div id="teachErr" class="err hidden">Incorrect passcode.</div>
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button class="btn" id="teachEnter" type="button">Enter</button>
+        <button class="btn secondary" id="teachCancel" type="button">Back to start</button>
+      </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="teachPanel" class="hidden">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+        <h1 style="margin:0">Teacher Dashboard</h1>
+        <span class="spacer"></span>
+        <button class="btn secondary" id="teachExit" type="button">Log out</button>
+      </div>
+      <div class="tabs" id="tabBar" role="tablist">
+        <button class="tab on" data-tab="overview" role="tab">Class overview</button>
+        <button class="tab" data-tab="mastery" role="tab">Standard mastery</button>
+        <button class="tab" data-tab="students" role="tab">Students</button>
+        <button class="tab" data-tab="growth" role="tab">Growth</button>
+        <button class="tab" data-tab="group" role="tab">Grouping &amp; reteach</button>
+        <button class="tab" data-tab="data" role="tab">Data</button>
+      </div>
+      <div id="tabBody"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot" id="footer">
+  Aligned to the Science Georgia Standards of Excellence for Environmental Science (course 26.06110) and the GaDOE
+  High School Environmental Science Curriculum Map. Items are tagged by standard element and Depth of Knowledge;
+  distractors are built from common student misconceptions. Built as a classroom pre/post benchmark tool &mdash; not an
+  official Georgia Milestones assessment.
+</footer>
+
+<script>
+/* ============================================================
+   Embedded data. The correct-answer key is NOT stored in plain
+   text anywhere in this file; it is encoded and decoded at run
+   time so that "View Source" does not reveal the answers.
+   ============================================================ */
+const STANDARDS = {"SEV1": "Flow of energy and cycling of matter within an ecosystem", "SEV2": "Stability and change in Earth's ecosystems", "SEV3": "Types, availability, allocation, and sustainability of energy resources", "SEV4": "Human impact on natural resources", "SEV5": "Effects of human population growth on global ecosystems"};
+const ELEMENTS  = {"SEV1a": "Levels of biological organization (organism → biosphere)", "SEV1b": "Laws of Thermodynamics & energy transfer (food chains/webs, trophic levels, 10% rule)", "SEV1c": "Biogeochemical cycles (water, carbon, nitrogen, phosphorus, oxygen)", "SEV1d": "Physical factors & organismal adaptations in terrestrial biomes", "SEV1e": "Chemical & physical properties of Georgia aquatic biomes", "SEV2a": "Short- & long-term natural climate fluctuations (El Niño, volcanism, Milankovitch)", "SEV2b": "Atmospheric chemistry (CO₂, methane) & the greenhouse effect", "SEV2c": "Ecological succession (biomass, biodiversity, complexity)", "SEV2d": "Value of biodiversity in ecosystem resilience", "SEV3a": "Origin & consumption of renewable & non-renewable energy", "SEV3b": "Risks & benefits of energy sources", "SEV3c": "Sustainability potential of energy resources", "SEV3d": "Design & defend a sustainable energy plan for a location", "SEV4a": "Effects of human activities on natural resources", "SEV4b": "Solutions to reduce human impact (smog, ozone, urbanization, ocean acidification)", "SEV4c": "Human population growth vs. food demand/supply (GMOs, monoculture, desertification, Green Revolution)", "SEV5a": "Quality of life & human impact (population growth, education, GNP)", "SEV5b": "Global population patterns (fertility/mortality, demographic transition, pyramids)", "SEV5c": "Ecological effects of human innovations (Ag, Industrial, Medical, Technological)", "SEV5d": "Personal sustainability plan & market/societal forces"};
+const QUESTIONS = [{"id": "SEV1a-A1", "form": "A", "std": "SEV1", "el": "a", "dok": 1, "stem": "All of the white-tailed deer living in Red Top Mountain State Park make up which level of biological organization?", "options": ["A population", "An entire ecosystem", "A whole community", "A single organism"]}, {"id": "SEV1a-A2", "form": "A", "std": "SEV1", "el": "a", "dok": 1, "stem": "Which level of organization includes BOTH the living and the non-living parts of an area?", "options": ["A community", "A single organism", "An ecosystem", "A population"]}, {"id": "SEV1a-B1", "form": "B", "std": "SEV1", "el": "a", "dok": 1, "stem": "Every largemouth bass living in one Georgia farm pond represents which level of biological organization?", "options": ["A population", "The whole biosphere", "An entire ecosystem", "A whole community"]}, {"id": "SEV1a-B2", "form": "B", "std": "SEV1", "el": "a", "dok": 2, "stem": "A student says an ecosystem is made of only the living things in an area. What is the student leaving out?", "options": ["The populations living in the nearby neighboring ecosystems", "Nothing important — that definition is complete", "The non-living (abiotic) factors, like water and soil", "The smallest microscopic organisms in the soil"]}, {"id": "SEV1b-A1", "form": "A", "std": "SEV1", "el": "b", "dok": 2, "stem": "A producer level in a food chain contains 10,000 kcal of energy. Using the 10% rule, about how much energy is available to the SECONDARY consumers?", "options": ["About 10 kcal", "About 100 kcal", "About 1,000 kcal", "About 9,000 kcal"]}, {"id": "SEV1b-A2", "form": "A", "std": "SEV1", "el": "b", "dok": 2, "stem": "As energy moves up a food chain, about 90% is not passed to the next level. What happens to that energy?", "options": ["It travels back down the chain to be reused later", "It is stored permanently in the bodies of producers", "It is destroyed and leaves the ecosystem entirely", "It is released as heat the next level cannot use"]}, {"id": "SEV1b-B1", "form": "B", "std": "SEV1", "el": "b", "dok": 2, "stem": "Grass in a field stores 50,000 kcal of energy. Following the 10% rule, about how much energy reaches the primary consumers (grasshoppers)?", "options": ["About 500 kcal", "About 5,000 kcal", "About 45,000 kcal", "About 50,000 kcal"]}, {"id": "SEV1b-B2", "form": "B", "std": "SEV1", "el": "b", "dok": 2, "stem": "Which statement correctly describes matter and energy in an ecosystem?", "options": ["Matter flows away as heat while energy keeps cycling", "Both energy and matter are destroyed at each level", "Both energy and matter are recycled endlessly", "Energy flows one way and is lost as heat; matter cycles"]}, {"id": "SEV1c-A1", "form": "A", "std": "SEV1", "el": "c", "dok": 2, "stem": "Plants cannot use nitrogen gas (N₂) directly from the air. What makes nitrogen available to plants?", "options": ["Bacteria convert nitrogen gas into forms plants absorb", "Plants breathe in nitrogen gas through their leaves", "Lightning instantly turns all nitrogen gas into oxygen", "Plants manufacture their own nitrogen from sunlight"]}, {"id": "SEV1c-A2", "form": "A", "std": "SEV1", "el": "c", "dok": 1, "stem": "Which process removes carbon dioxide from the atmosphere and stores carbon in living tissue?", "options": ["Cellular respiration", "Photosynthesis", "Decomposition", "Combustion of fuels"]}, {"id": "SEV1c-B1", "form": "B", "std": "SEV1", "el": "c", "dok": 2, "stem": "Why does phosphorus move differently through its cycle than carbon and nitrogen do?", "options": ["Phosphorus rarely enters the air; it stays in rock and soil", "Phosphorus is not really needed by living things at all", "Phosphorus is found only dissolved in the deep ocean", "Phosphorus is a gas that stays mostly in the air"]}, {"id": "SEV1c-B2", "form": "B", "std": "SEV1", "el": "c", "dok": 3, "stem": "A student claims the water, carbon, and nitrogen cycles each work completely on their own. Why is this incorrect?", "options": ["It is correct — each cycle runs fully on its own", "The cycles connect; matter moves among them as it cycles", "The cycles interact only deep inside animal bodies", "Only the water cycle actually moves real matter around"]}, {"id": "SEV1d-A1", "form": "A", "std": "SEV1", "el": "d", "dok": 2, "stem": "Desert cacti store water in thick stems and have a waxy coating. These adaptations are mainly a response to which physical factors?", "options": ["Cold, salty breezes blowing off a nearby ocean", "Deep, shady soil that is very rich in nutrients", "Intense sunlight and very little available water", "Heavy rainfall and consistently cool temperatures"]}, {"id": "SEV1d-A2", "form": "A", "std": "SEV1", "el": "d", "dok": 3, "stem": "Which statement best explains why organisms living far inland often differ from those living near a coastline?", "options": ["Inland and coastal organisms are always identical", "Only the other animals present determine adaptations", "Coastlines have no measurable effect on any organisms", "Distance from the ocean changes moisture and temperature"]}, {"id": "SEV1d-B1", "form": "B", "std": "SEV1", "el": "d", "dok": 2, "stem": "Rocky Mountain goats have hard, split hooves and are extremely sure-footed. Which physical factor most directly shaped this adaptation?", "options": ["The number of daylight hours in each season", "The amount of nitrogen found in the local soil", "The steep, rocky terrain they climb (topography)", "How close their home range sits to the ocean coastline"]}, {"id": "SEV1d-B2", "form": "B", "std": "SEV1", "el": "d", "dok": 3, "stem": "A camel is well adapted to shifting sand and long dry periods but would struggle on steep, rocky cliffs. This shows that:", "options": ["Every environment requires the exact same adaptations", "Adaptations are random and unrelated to the environment", "Adaptations depend only on the other animals present", "Physical (abiotic) factors shape which adaptations help"]}, {"id": "SEV1e-A1", "form": "A", "std": "SEV1", "el": "e", "dok": 2, "stem": "A healthy Georgia stream usually has dissolved oxygen (DO) between 5 and 8 ppm. Why does dissolved oxygen matter?", "options": ["Fish and other aquatic organisms need it to breathe", "Organisms get all their oxygen from the water molecules", "It raises the turbidity and cloudiness of the water", "It steadily makes the water much more acidic over time"]}, {"id": "SEV1e-A2", "form": "A", "std": "SEV1", "el": "e", "dok": 3, "stem": "Scientists collect many mayfly, stonefly, and caddisfly larvae (sensitive species) from a stream. What does this most likely indicate?", "options": ["Nothing at all can be inferred about the water", "The water is healthy with plenty of dissolved oxygen", "The water is heavily polluted and low in oxygen", "The water contains almost no dissolved oxygen at all"]}, {"id": "SEV1e-B1", "form": "B", "std": "SEV1", "el": "e", "dok": 1, "stem": "Which measurement tells a scientist how cloudy (how much suspended material is in) stream water?", "options": ["The turbidity", "The temperature", "The pH level", "The dissolved oxygen"]}, {"id": "SEV1e-B2", "form": "B", "std": "SEV1", "el": "e", "dok": 2, "stem": "Which macroinvertebrate sample best indicates a HEALTHY Georgia stream?", "options": ["A huge number of just one single very tolerant species", "A diverse mix that includes sensitive mayfly larvae", "Only tolerant aquatic worms and mosquito larvae", "No living macroinvertebrates of any kind present"]}, {"id": "SEV2a-A1", "form": "A", "std": "SEV2", "el": "a", "dok": 3, "stem": "The 1991 eruption of Mt. Pinatubo temporarily lowered Earth's average temperature by about 0.5°C. Why?", "options": ["The volcano added extra oxygen to the atmosphere", "It permanently changed Earth's orbit around the Sun", "Ash and gases blocked some incoming sunlight", "Flowing lava warmed the world's oceans everywhere"]}, {"id": "SEV2a-A2", "form": "A", "std": "SEV2", "el": "a", "dok": 2, "stem": "Which is an example of a LONG-term natural cause of climate change (acting over tens of thousands of years)?", "options": ["A single strong El Niño event in the Pacific", "One large volcanic eruption that blocks sunlight", "A single record-breaking summer heat wave", "Milankovitch cycles in Earth's orbit and tilt"]}, {"id": "SEV2a-B1", "form": "B", "std": "SEV2", "el": "a", "dok": 1, "stem": "During an El Niño event, the trade winds weaken or reverse. El Niño typically occurs:", "options": ["Only once every few million years or so", "Every single year on exactly the same date", "Every 2–7 years, with no fixed schedule", "Only when human air pollution triggers it"]}, {"id": "SEV2a-B2", "form": "B", "std": "SEV2", "el": "a", "dok": 3, "stem": "A student says climates can never change unless humans cause it. Which evidence best corrects this idea?", "options": ["Only factories, cars, and power plants change climate", "Climates truly never change on their own", "Climate change is not actually real at all", "Natural events changed climate long before humans"]}, {"id": "SEV2b-A1", "form": "A", "std": "SEV2", "el": "b", "dok": 2, "stem": "Greenhouse gases such as carbon dioxide and methane affect Earth's temperature by:", "options": ["Trapping heat energy near Earth's surface", "Blocking all incoming sunlight from the surface", "Reflecting all heat into space to cool the planet", "Producing extra oxygen for living things to use"]}, {"id": "SEV2b-A2", "form": "A", "std": "SEV2", "el": "b", "dok": 2, "stem": "Which statement about greenhouse gases is TRUE?", "options": ["They are entirely human-made and unnatural", "They occur naturally and keep Earth warm enough", "They exist only in the air and nowhere else", "They have no real effect on Earth's temperature"]}, {"id": "SEV2b-B1", "form": "B", "std": "SEV2", "el": "b", "dok": 3, "stem": "Data show that atmospheric CO₂ and average global temperature both rose over the same time period. This pattern is best described as:", "options": ["A sign the two rising trends may be connected", "Proof the air contains no greenhouse gases at all", "Proof that temperature follows no real pattern", "Showing no relationship between the two trends"]}, {"id": "SEV2b-B2", "form": "B", "std": "SEV2", "el": "b", "dok": 2, "stem": "Besides releasing gases, what else can increase the amount of CO₂ in the atmosphere?", "options": ["Nothing besides direct emissions can change it", "Cutting down forests that absorb carbon dioxide", "Somehow increasing the size of the oceans", "Planting many millions more forests around the world"]}, {"id": "SEV2c-A1", "form": "A", "std": "SEV2", "el": "c", "dok": 3, "stem": "Which situation would begin PRIMARY succession?", "options": ["An old farm field that still has all its soil", "A flooded meadow that keeps its rich topsoil", "Bare rock left behind after a glacier retreats", "A forest regrowing after a wildfire, on soil"]}, {"id": "SEV2c-A2", "form": "A", "std": "SEV2", "el": "c", "dok": 2, "stem": "As an ecosystem moves through succession toward a climax community, biomass and biodiversity generally:", "options": ["Disappear completely", "Stay exactly the same", "Steadily decrease", "Steadily increase"]}, {"id": "SEV2c-B1", "form": "B", "std": "SEV2", "el": "c", "dok": 1, "stem": "Lichens and mosses are often the first organisms to colonize bare rock after a disturbance. These are called:", "options": ["A climax community", "Invasive species", "Pioneer species", "Keystone species"]}, {"id": "SEV2c-B2", "form": "B", "std": "SEV2", "el": "c", "dok": 3, "stem": "A student says every climax community looks the same and always takes thousands of years to form. What is the best correction?", "options": ["The student's statement is completely correct", "Deserts and forests reach identical climax communities", "Succession never actually reaches a climax community", "Climax communities vary by biome and can form faster"]}, {"id": "SEV2d-A1", "form": "A", "std": "SEV2", "el": "d", "dok": 2, "stem": "The gopher tortoise digs burrows that many other Georgia species use for shelter and to escape fire. The gopher tortoise is best described as a:", "options": ["A keystone species", "An invasive species", "A non-native species", "A pioneer species"]}, {"id": "SEV2d-A2", "form": "A", "std": "SEV2", "el": "d", "dok": 3, "stem": "Why does higher biodiversity usually make an ecosystem more stable and resilient?", "options": ["It doesn't — biodiversity has no effect on stability", "Other species can fill a role when one declines", "Only the very largest species affect its stability", "More species always cause an ecosystem to collapse"]}, {"id": "SEV2d-B1", "form": "B", "std": "SEV2", "el": "d", "dok": 2, "stem": "Kudzu was introduced to the southeastern United States and now grows over and outcompetes native plants. Kudzu is an example of a(n):", "options": ["An invasive species", "A keystone species", "An endemic species", "An indicator species"]}, {"id": "SEV2d-B2", "form": "B", "std": "SEV2", "el": "d", "dok": 2, "stem": "Which statement about non-native species is correct?", "options": ["Every non-native species eventually becomes invasive", "Only some non-native species become invasive", "Non-native species are always helpful to an ecosystem", "The terms 'native' and 'non-native' mean the same"]}, {"id": "SEV3a-A1", "form": "A", "std": "SEV3", "el": "a", "dok": 1, "stem": "Which of the following is a NON-renewable energy source?", "options": ["Solar power", "Wind power", "Coal", "Geothermal"]}, {"id": "SEV3a-A2", "form": "A", "std": "SEV3", "el": "a", "dok": 2, "stem": "Why is nuclear power usually grouped with the non-renewable sources?", "options": ["Because it never produces any waste", "Because it uses fast-flowing river water", "Because it runs directly on sunlight", "Because it depends on limited uranium fuel"]}, {"id": "SEV3a-B1", "form": "B", "std": "SEV3", "el": "a", "dok": 2, "stem": "Which list contains ONLY renewable energy sources?", "options": ["Coal, oil, natural gas", "Uranium, coal, solar", "Solar, wind, hydropower", "Natural gas, wind, oil"]}, {"id": "SEV3a-B2", "form": "B", "std": "SEV3", "el": "a", "dok": 2, "stem": "According to U.S. energy data, which source provided the LARGEST share of U.S. energy in 2021?", "options": ["Solar power", "Geothermal", "Wind power", "Fossil fuels"]}, {"id": "SEV3b-A1", "form": "A", "std": "SEV3", "el": "b", "dok": 2, "stem": "Which of these is a genuine BENEFIT of solar energy?", "options": ["It is renewable and pollutes little while running", "It emits large amounts of CO₂ during use", "It works just as well at night as in daytime", "It runs on uranium fuel rods, like a reactor"]}, {"id": "SEV3b-A2", "form": "A", "std": "SEV3", "el": "b", "dok": 3, "stem": "A student claims renewable energy sources have no drawbacks at all. Which is a REAL drawback of a renewable source?", "options": ["They run out quickly, just like fossil fuels do", "Solar and wind depend on weather and daylight", "They release the most greenhouse gases of any", "Renewables genuinely have no drawbacks at all"]}, {"id": "SEV3b-B1", "form": "B", "std": "SEV3", "el": "b", "dok": 2, "stem": "Which is a real BENEFIT of fossil fuels compared with many renewable sources?", "options": ["They are reliable and easy to store and move", "They can never be used up or run out", "They produce no pollution at all when burned", "They are a fully renewable energy source"]}, {"id": "SEV3b-B2", "form": "B", "std": "SEV3", "el": "b", "dok": 2, "stem": "Which of these is a genuine RISK of nuclear power?", "options": ["It carries no real risks of any kind", "It creates long-lived radioactive waste", "It depends entirely on the daily weather", "It emits large amounts of CO₂ while running"]}, {"id": "SEV3c-A1", "form": "A", "std": "SEV3", "el": "c", "dok": 3, "stem": "Being 'renewable' does NOT automatically make an energy source 'sustainable.' Which example shows this?", "options": ["Solar panels last forever and use no materials", "Sunlight will completely run out within a year", "Biofuels can require soil-depleting monoculture farms", "Wind power is actually a non-renewable resource"]}, {"id": "SEV3c-A2", "form": "A", "std": "SEV3", "el": "c", "dok": 3, "stem": "To decide whether an energy source is sustainable, scientists should consider:", "options": ["Only how much the source costs us today", "Only whether the source is currently popular", "Only how modern the technology looks today", "Its full impact from collection to disposal"]}, {"id": "SEV3c-B1", "form": "B", "std": "SEV3", "el": "c", "dok": 2, "stem": "Despite its low emissions, why is nuclear power often judged NOT fully sustainable?", "options": ["Because it releases large amounts of CO₂", "Because it uses up far too much sunlight", "Because its radioactive waste lasts a very long time", "Because it is completely harmless to use"]}, {"id": "SEV3c-B2", "form": "B", "std": "SEV3", "el": "c", "dok": 3, "stem": "Which question best helps evaluate whether an energy plan is sustainable?", "options": ["Is it simply the cheapest option today?", "Does the technology look sleek and modern?", "Do most of my friends already use it?", "Can it last long-term without doing major harm?"]}, {"id": "SEV3d-A1", "form": "A", "std": "SEV3", "el": "d", "dok": 2, "stem": "A town in the North Georgia mountains wants to use solar power. Which local challenge must its energy plan address?", "options": ["Mountains and trees can shade the solar panels", "There is never any usable sunlight in Georgia", "Solar panels only work right beside the ocean", "Solar power cannot be used anywhere in Georgia"]}, {"id": "SEV3d-A2", "form": "A", "std": "SEV3", "el": "d", "dok": 2, "stem": "Why won't a single energy plan work for every location in the United States?", "options": ["Only coal can realistically be used everywhere", "Available resources differ from place to place", "Energy needs are identical in every location", "All locations have exactly the same resources"]}, {"id": "SEV3d-B1", "form": "B", "std": "SEV3", "el": "d", "dok": 3, "stem": "Before building a large hydropower dam, planners should carefully consider:", "options": ["Cost, fish migration, and flooded farmland", "Only the color of the reservoir's water", "Only how tall and impressive the dam looks", "Nothing — large dams have no real downsides"]}, {"id": "SEV3d-B2", "form": "B", "std": "SEV3", "el": "d", "dok": 2, "stem": "A good sustainable energy plan for a specific location is one that:", "options": ["Uses the most polluting source it can find", "Fits reliable local resources to local needs", "Ignores the local geography completely", "Copies another distant country's plan word for word"]}, {"id": "SEV4a-A1", "form": "A", "std": "SEV4", "el": "a", "dok": 2, "stem": "When excess nitrogen and phosphorus fertilizer runs off farms into a lake, it often causes:", "options": ["The water to become clearer and much healthier", "The amount of oxygen for fish to increase a lot", "Algal blooms that lower the water's oxygen", "No measurable change at all to the water"]}, {"id": "SEV4a-A2", "form": "A", "std": "SEV4", "el": "a", "dok": 3, "stem": "A student says human activities do not really affect natural resources. Which example best refutes this claim?", "options": ["Only volcanoes ever affect our natural resources", "Human activities have no measurable effect at all", "Natural resources are basically unlimited for us", "Mining causes erosion and pollutes groundwater"]}, {"id": "SEV4a-B1", "form": "B", "std": "SEV4", "el": "a", "dok": 3, "stem": "Nitrogen fertilizer from Midwest farms travels down the Mississippi River and helps create a low-oxygen 'dead zone' in the Gulf of Mexico. This is an example of:", "options": ["An improvement in the Gulf's water quality", "Something affecting only the farm's own soil", "Farm runoff harming water far downstream", "A natural process unrelated to human activity"]}, {"id": "SEV4a-B2", "form": "B", "std": "SEV4", "el": "a", "dok": 2, "stem": "Which pairing of a human activity and its impact is correct?", "options": ["Urbanization tends to create cleaner rivers", "Overfishing leads to larger fish populations", "Deforestation results in much less erosion", "Urbanization adds runoff that pollutes water"]}, {"id": "SEV4b-A1", "form": "A", "std": "SEV4", "el": "b", "dok": 2, "stem": "Ocean acidification happens as the ocean absorbs excess CO₂, forming carbonic acid. Which statement is accurate?", "options": ["Ocean pH is dropping, harming shelled animals", "The ocean is steadily becoming more basic", "Carbon dioxide has no effect on ocean water", "The ocean has literally turned into an acid"]}, {"id": "SEV4b-A2", "form": "A", "std": "SEV4", "el": "b", "dok": 2, "stem": "Adding rooftop gardens and green spaces in a city most directly helps reduce:", "options": ["The tilt of the Earth's axis in its orbit", "The urban heat island effect in cities", "The daily rise and fall of the ocean tides", "The frequency of nearby volcanic eruptions"]}, {"id": "SEV4b-B1", "form": "B", "std": "SEV4", "el": "b", "dok": 2, "stem": "Which action most directly reduces photochemical smog?", "options": ["Cutting emissions from vehicles and plants", "Increasing overall fossil-fuel use in cities", "Banning all rooftop and community gardens", "Removing all of the trees from the city"]}, {"id": "SEV4b-B2", "form": "B", "std": "SEV4", "el": "b", "dok": 3, "stem": "A student says nothing can be done to reduce human impact on the environment. Which real example refutes this?", "options": ["Using even more CFCs would help the ozone", "Banning CFCs helped the ozone layer recover", "Nothing humans have ever tried has worked", "Removing green spaces from all our cities"]}, {"id": "SEV4c-A1", "form": "A", "std": "SEV4", "el": "c", "dok": 2, "stem": "Growing the same crop on the same land year after year (monoculture) can lead to:", "options": ["The soil growing richer and richer over time", "Permanently high yields with no added inputs", "Depleted soil that can slowly turn to desert", "Greater and greater biodiversity in the soil"]}, {"id": "SEV4c-A2", "form": "A", "std": "SEV4", "el": "c", "dok": 3, "stem": "The Green Revolution greatly increased grain yields worldwide. What is a major TRADE-OFF of these high-yield crops?", "options": ["They out-produce native strains with no inputs", "They require almost no water to grow well", "They remove the need for farming altogether", "They require heavy fertilizer and pesticide use"]}, {"id": "SEV4c-B1", "form": "B", "std": "SEV4", "el": "c", "dok": 1, "stem": "What is one purpose of genetically modified (GMO) crops?", "options": ["To make the crops less nutritious than before", "To deliberately shrink the world food supply", "To add pest resistance or drought tolerance", "To let crops grow with no soil whatsoever"]}, {"id": "SEV4c-B2", "form": "B", "std": "SEV4", "el": "c", "dok": 2, "stem": "Why do many farmers use crop rotation instead of continuous monoculture?", "options": ["To intentionally trigger local desertification", "Because every crop needs the exact same nutrients", "To use up and deplete the soil much faster", "Different crops use and restore different nutrients"]}, {"id": "SEV5a-A1", "form": "A", "std": "SEV5", "el": "a", "dok": 3, "stem": "Compared with Less Developed Countries (LDCs), More Developed Countries (MDCs) generally have:", "options": ["Higher income (GNP) and lower fertility rates", "Nearly identical income and fertility rates", "No formal system of public education at all", "Lower average income and higher fertility rates"]}, {"id": "SEV5a-A2", "form": "A", "std": "SEV5", "el": "a", "dok": 2, "stem": "Research shows that increasing access to education, especially for women, tends to:", "options": ["Instantly erase every kind of human impact", "Lower fertility rates and improve quality of life", "Sharply raise fertility rates across society", "Have no effect on population or quality of life"]}, {"id": "SEV5a-B1", "form": "B", "std": "SEV5", "el": "a", "dok": 2, "stem": "The replacement fertility rate for humans is about 2.1 births per woman. A total fertility rate well ABOVE 2.1 suggests that a population is:", "options": ["Growing in size", "Having no children", "Shrinking in size", "Perfectly stable"]}, {"id": "SEV5a-B2", "form": "B", "std": "SEV5", "el": "a", "dok": 3, "stem": "Which statement about a nation's development and its impact on the environment is best supported?", "options": ["Only less-developed countries harm the environment", "Development shapes quality of life and impact", "Only highly-developed countries harm the planet", "A nation's development has no link to its impact"]}, {"id": "SEV5b-A1", "form": "A", "std": "SEV5", "el": "b", "dok": 1, "stem": "A population increases in size when:", "options": ["The birth and death rates are exactly equal", "The death rate is higher than the birth rate", "The birth rate is higher than the death rate", "No individuals in the population are born"]}, {"id": "SEV5b-A2", "form": "A", "std": "SEV5", "el": "b", "dok": 2, "stem": "A population pyramid shaped like a wide-based triangle usually indicates a country with:", "options": ["A shrinking population that is mostly elderly", "An equal number at every age, with no pattern", "Low fertility and a long life expectancy", "A high fertility rate with many young people"]}, {"id": "SEV5b-B1", "form": "B", "std": "SEV5", "el": "b", "dok": 3, "stem": "A student claims that all populations on Earth are growing at the same rate. Why is this incorrect?", "options": ["No populations anywhere are actually growing", "It is correct — growth is identical everywhere", "Growth is uneven; rates differ by country", "Only the U.S. population ever really changes"]}, {"id": "SEV5b-B2", "form": "B", "std": "SEV5", "el": "b", "dok": 2, "stem": "A population pyramid shaped like a tall 'rocket' (fairly even width top to bottom) most likely represents a country with:", "options": ["Only young children and no adults at all", "No older people present in it at all", "Very high fertility and almost no elderly people at all", "Low fertility, with both young and old present"]}, {"id": "SEV5c-A1", "form": "A", "std": "SEV5", "el": "c", "dok": 1, "stem": "The factories of the Industrial Revolution greatly increased demand for which resource, adding pollution to the air?", "options": ["Coal and other fossil fuels", "Only wind power from turbines", "None — factories used no energy", "Sunlight captured by panels"]}, {"id": "SEV5c-A2", "form": "A", "std": "SEV5", "el": "c", "dok": 2, "stem": "Advances in medicine (vaccines, surgery, disease control) affected human populations mainly by:", "options": ["Having no effect on the size of populations", "Raising life expectancy and growing population", "Decreasing human life expectancy overall", "Causing the total population to shrink"]}, {"id": "SEV5c-B1", "form": "B", "std": "SEV5", "el": "c", "dok": 2, "stem": "Agricultural innovations such as tractors and chemical fertilizers allowed:", "options": ["More food, fewer workers, but more fuel used", "Far less food to be grown than before", "Farming to stop almost entirely everywhere", "Food to be grown with no environmental effects"]}, {"id": "SEV5c-B2", "form": "B", "std": "SEV5", "el": "c", "dok": 3, "stem": "A student says new technologies never increase human impact on the environment. Which example best refutes this?", "options": ["Technology only ever helps and never harms us", "Engines and factories raised fuel use and smog", "Technology carries no environmental cost at all", "Innovations cut resource use all the way to zero"]}, {"id": "SEV5d-A1", "form": "A", "std": "SEV5", "el": "d", "dok": 2, "stem": "Which individual action would most reduce a person's environmental impact?", "options": ["Buying many more single-use plastic products", "Throwing out items that could still be reused", "Biking or taking the bus instead of driving alone", "Leaving lights and devices switched on all day"]}, {"id": "SEV5d-A2", "form": "A", "std": "SEV5", "el": "d", "dok": 3, "stem": "A student says one person's choices cannot make any difference. Which idea best challenges this?", "options": ["Recycling never actually helps anything", "One person truly cannot make any difference", "Only governments can affect the environment", "Small actions add up across many people"]}, {"id": "SEV5d-B1", "form": "B", "std": "SEV5", "el": "d", "dok": 2, "stem": "How can market forces affect a person's ability to make sustainable choices?", "options": ["Cost never influences a purchase decision", "Everything is always plastic-free and free", "Prices and available options shape what we buy", "Market options and prices don't affect choices"]}, {"id": "SEV5d-B2", "form": "B", "std": "SEV5", "el": "d", "dok": 1, "stem": "Plastics that are thrown away improperly often end up as:", "options": ["Useful nutrients that enrich garden soil", "Harmless gases that leave no trace behind", "Clean, safe drinking water for communities", "Microplastics in oceans, water, and food"]}];   /* no answers here */
+const _KX = "PEJCDVdCVkNPSR8eFl4aEQIcR0NCDVZCVkNPSRweFl8aEQAcR0BCDVZCVkFPSR4eFl8aEQAcR0JCDVRCVkFPSR4eFl0aEQIcR0JCDVRCVkNPSRweFl0aEQIcR0BCDVZCVkNPSRweFl8aEQAcR0BCDVZCVkFPSR4eFl8aEQAcR0JCDVRCVkFPSR4eFl0aEQIcR0JCDVRCVkNPSRweFl0aEQIcR0BCDVZCVkNPSRweFl8aEQAcR0BCDVZCVkFPSR4eFl8aEQAcR0JCDVRCVkFPSR4eFl0aEQIcR0JCDVRCVkNPSRweFl0aEQIcR0BCDVYz";               /* encoded key blob   */
+const CONFIG = {"kp": "grn-envsci-26o6110", "secret": "sev2606-arbench-2026", "passcode": "enviro34", "endpoint": "", "appsScript": "// Environmental Science Benchmark -- Google Sheet logger (doPost)\n// 1) In your Google Sheet: Extensions > Apps Script. Delete any code, paste this.\n// 2) Deploy > New deployment > Web app.\n//      Execute as: Me      Who has access: Anyone\n// 3) Copy the /exec URL into the benchmark's Data tab (SHEET_ENDPOINT).\n// The SECRET below must match the SECRET shown in the benchmark's Data tab.\nvar SECRET = \"sev2606-arbench-2026\";\n\nfunction doPost(e) {\n  try {\n    var data = JSON.parse(e.postData.contents);\n    if (data.secret !== SECRET) {\n      return ContentService.createTextOutput(JSON.stringify({ok:false, error:\"bad secret\"}))\n        .setMimeType(ContentService.MimeType.JSON);\n    }\n    var ss = SpreadsheetApp.getActiveSpreadsheet();\n    var sh = ss.getSheetByName(\"Responses\") || ss.insertSheet(\"Responses\");\n    if (sh.getLastRow() === 0) {\n      sh.appendRow([\"Timestamp\",\"Name\",\"Period\",\"Form\",\"Score\",\"Total\",\"Percent\",\"Level\",\n                    \"SEV1 %\",\"SEV2 %\",\"SEV3 %\",\"SEV4 %\",\"SEV5 %\",\"Answers (JSON)\"]);\n    }\n    var d = data.domains || {};\n    function p(x){ return (x && typeof x.pct === \"number\") ? x.pct : \"\"; }\n    sh.appendRow([data.ts || new Date(), data.name || \"\", data.period || \"\", data.form || \"\",\n                  data.score || 0, data.total || 0, data.pct || 0, data.level || \"\",\n                  p(d.SEV1), p(d.SEV2), p(d.SEV3), p(d.SEV4), p(d.SEV5),\n                  JSON.stringify(data.answers || {})]);\n    return ContentService.createTextOutput(JSON.stringify({ok:true}))\n      .setMimeType(ContentService.MimeType.JSON);\n  } catch (err) {\n    return ContentService.createTextOutput(JSON.stringify({ok:false, error:String(err)}))\n      .setMimeType(ContentService.MimeType.JSON);\n  }\n}\n\nfunction doGet() {\n  return ContentService.createTextOutput(\"Environmental Science benchmark endpoint is live.\");\n}\n"};
+
+/* ---- runtime key decode (obfuscation, not cryptography) ---- */
+function _dk(){
+  try{
+    const p = CONFIG.kp, bin = atob(_KX); let s="";
+    for(let i=0;i<bin.length;i++){ s += String.fromCharCode(bin.charCodeAt(i) ^ p.charCodeAt(i%p.length)); }
+    const arr = JSON.parse(s), map = {};
+    QUESTIONS.forEach((q,i)=>{ map[q.id]=arr[i]; });
+    return map;
+  }catch(e){ console.error("key decode failed",e); return {}; }
+}
+const KEY = _dk();
+
+/* ---------------- persistence ---------------- */
+const LS = {
+  attempts:"envsci_attempts_v1",
+  theme:"envsci_theme",
+  endpoint:"envsci_endpoint",
+  progress:"envsci_progress_v1"
+};
+function loadAttempts(){ try{return JSON.parse(localStorage.getItem(LS.attempts))||[];}catch(e){return [];} }
+function saveAttempts(a){ localStorage.setItem(LS.attempts, JSON.stringify(a)); }
+function getEndpoint(){ return localStorage.getItem(LS.endpoint) || CONFIG.endpoint || ""; }
+
+/* ---------------- helpers ---------------- */
+const $ = s=>document.querySelector(s);
+const $$ = s=>Array.from(document.querySelectorAll(s));
+const LETTERS=["A","B","C","D"];
+const DOMORDER=["SEV1","SEV2","SEV3","SEV4","SEV5"];
+function esc(t){ return String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function pctColor(p){
+  if(p>=80) return "#2e8b57";
+  if(p>=65) return "#7cb342";
+  if(p>=50) return "#d9a125";
+  if(p>=35) return "#e07b39";
+  return "#c94436";
+}
+function levelFor(p){
+  if(p>=85) return {name:"Distinguished", color:"#2e8b57"};
+  if(p>=70) return {name:"Proficient",    color:"#7cb342"};
+  if(p>=50) return {name:"Developing",    color:"#d9a125"};
+  return      {name:"Beginning",     color:"#c94436"};
+}
+
+/* ---------------- theme ---------------- */
+function applyTheme(t){
+  document.documentElement.setAttribute("data-theme",t);
+  const dark = t==="dark" || (t==="auto" && matchMedia("(prefers-color-scheme:dark)").matches);
+  $("#themeIcon").innerHTML = dark ? "&#9728;" : "&#9681;";
+  $("#themeTxt").textContent = t==="auto" ? "Auto" : (t==="dark"?"Dark":"Light");
+}
+(function initTheme(){ applyTheme(localStorage.getItem(LS.theme)||"auto"); })();
+$("#themeBtn").addEventListener("click",()=>{
+  const cur=localStorage.getItem(LS.theme)||"auto";
+  const next = cur==="auto"?"light":cur==="light"?"dark":"auto";
+  localStorage.setItem(LS.theme,next); applyTheme(next);
+});
+
+/* ---------------- screen routing ---------------- */
+function show(id){
+  ["start","test","results","teacher"].forEach(s=>$("#"+s).classList.toggle("hidden", s!==id));
+  window.scrollTo(0,0);
+}
+
+/* ============================================================
+   TEST ENGINE
+   ============================================================ */
+let RUN = null; // {name,period,form,items:[],answers:{},flags:Set,idx}
+
+function itemsForForm(form){
+  const wanted = form==="Pre" ? "A" : "B";
+  return QUESTIONS.filter(q=>q.form===wanted)
+    .slice()
+    .sort((a,b)=> a.std.localeCompare(b.std) || a.el.localeCompare(b.el) || a.id.localeCompare(b.id));
+}
+
+$("#formPick").addEventListener("change",e=>{
+  $$("#formPick label").forEach(l=>l.classList.toggle("on", l.querySelector("input").checked));
+});
+
+$("#beginBtn").addEventListener("click",()=>{
+  const name=$("#sName").value.trim(), period=$("#sPeriod").value.trim();
+  const form=(document.querySelector('input[name=form]:checked')||{}).value;
+  const err=$("#startErr"); const problems=[];
+  if(!name) problems.push("enter your name");
+  if(!period) problems.push("enter your class period");
+  if(!form) problems.push("choose Pre-Test or Post-Test");
+  if(problems.length){ err.textContent="Please "+problems.join(", ")+"."; err.classList.remove("hidden"); return; }
+  err.classList.add("hidden");
+  // resume?
+  const saved = loadProgress();
+  if(saved && saved.name===name && saved.period===period && saved.form===form && !saved.submitted){
+    RUN = { name, period, form, items:itemsForForm(form), answers:saved.answers||{}, flags:new Set(saved.flags||[]), idx:saved.idx||0 };
+  } else {
+    RUN = { name, period, form, items:itemsForForm(form), answers:{}, flags:new Set(), idx:0 };
+  }
+  show("test"); renderQ(); renderNav();
+});
+
+function saveProgress(){
+  if(!RUN) return;
+  localStorage.setItem(LS.progress, JSON.stringify({
+    name:RUN.name, period:RUN.period, form:RUN.form, idx:RUN.idx,
+    answers:RUN.answers, flags:Array.from(RUN.flags), submitted:false
+  }));
+}
+function loadProgress(){ try{return JSON.parse(localStorage.getItem(LS.progress));}catch(e){return null;} }
+function clearProgress(){ localStorage.removeItem(LS.progress); }
+
+function renderQ(){
+  const q=RUN.items[RUN.idx], n=RUN.items.length;
+  $("#qCounter").textContent=`Question ${RUN.idx+1} of ${n}`;
+  $("#progFill").style.width = Math.round((RUN.idx+1)/n*100)+"%";
+  $("#qStem").innerHTML = esc(q.stem);
+  const chosen = RUN.answers[q.id];
+  $("#qOpts").innerHTML = q.options.map((o,i)=>`
+    <label class="opt${chosen===i?' sel':''}" data-i="${i}">
+      <span class="ltr" aria-hidden="true">${LETTERS[i]}</span>
+      <input type="radio" name="opt" value="${i}" ${chosen===i?'checked':''}>
+      <span>${esc(o)}</span>
+    </label>`).join("");
+  $$("#qOpts .opt").forEach(el=>{
+    el.addEventListener("click",()=>{
+      RUN.answers[q.id]=+el.dataset.i;
+      $$("#qOpts .opt").forEach(x=>x.classList.remove("sel"));
+      el.classList.add("sel"); el.querySelector("input").checked=true;
+      saveProgress(); renderNav();
+    });
+  });
+  const fb=$("#flagBtn"), on=RUN.flags.has(q.id);
+  fb.classList.toggle("on",on); fb.setAttribute("aria-pressed",on?"true":"false");
+  fb.innerHTML = (on?"&#9873; Flagged":"&#9873; Flag");
+  $("#prevBtn").disabled = RUN.idx===0;
+  $("#nextBtn").textContent = RUN.idx===n-1 ? "Finish →" : "Next →";
+}
+function renderNav(){
+  const n=RUN.items.length;
+  $("#navGrid").innerHTML = RUN.items.map((q,i)=>{
+    const a = RUN.answers[q.id]!=null;
+    const f = RUN.flags.has(q.id);
+    return `<button class="navcell${a?' answered':''}${f?' flag':''}${i===RUN.idx?' current':''}" data-i="${i}" aria-label="Question ${i+1}${a?', answered':', not answered'}${f?', flagged':''}">${i+1}</button>`;
+  }).join("");
+  $$("#navGrid .navcell").forEach(c=>c.addEventListener("click",()=>{ RUN.idx=+c.dataset.i; saveProgress(); renderQ(); renderNav(); }));
+  const answered = RUN.items.filter(q=>RUN.answers[q.id]!=null).length;
+  $("#answeredCount").textContent = `${answered} of ${n} answered`;
+}
+$("#flagBtn").addEventListener("click",()=>{
+  const q=RUN.items[RUN.idx];
+  if(RUN.flags.has(q.id)) RUN.flags.delete(q.id); else RUN.flags.add(q.id);
+  saveProgress(); renderQ(); renderNav();
+});
+$("#prevBtn").addEventListener("click",()=>{ if(RUN.idx>0){RUN.idx--; renderQ(); renderNav();} });
+$("#nextBtn").addEventListener("click",()=>{
+  if(RUN.idx < RUN.items.length-1){ RUN.idx++; renderQ(); renderNav(); }
+  else { document.getElementById("navCard").scrollIntoView({behavior:"smooth"}); }
+});
+$("#navToggle").addEventListener("click",()=>{
+  const c=$("#navCard"), hidden=c.classList.toggle("hidden");
+  $("#navToggle").setAttribute("aria-expanded", (!hidden).toString());
+});
+
+$("#submitBtn").addEventListener("click",()=>{
+  const n=RUN.items.length;
+  const unanswered = RUN.items.filter(q=>RUN.answers[q.id]==null).length;
+  let msg = "Submit your benchmark now? You will not be able to change your answers after this.";
+  if(unanswered>0) msg = `You have ${unanswered} unanswered question(s). Unanswered questions are marked incorrect. Submit anyway?`;
+  if(!confirm(msg)) return;
+  submitRun();
+});
+
+/* ---------------- scoring ---------------- */
+function scoreRun(run){
+  const domains={}; DOMORDER.forEach(d=>domains[d]={c:0,t:0});
+  let correct=0;
+  run.items.forEach(q=>{
+    domains[q.std].t++;
+    const chosen=run.answers[q.id];
+    if(chosen!=null && chosen===KEY[q.id]){ correct++; domains[q.std].c++; }
+  });
+  DOMORDER.forEach(d=>{ const o=domains[d]; o.pct = o.t? Math.round(o.c/o.t*100):0; });
+  const total=run.items.length;
+  const pct=Math.round(correct/total*100);
+  return {score:correct, total, pct, domains, level:levelFor(pct).name};
+}
+
+function submitRun(){
+  const r=scoreRun(RUN);
+  const attempt={
+    id: "a"+Date.now()+Math.floor(Math.random()*1e4),
+    ts: new Date().toISOString(),
+    name:RUN.name, period:RUN.period, form:RUN.form,
+    answers:Object.assign({},RUN.answers),
+    score:r.score, total:r.total, pct:r.pct, level:r.level,
+    domains:r.domains
+  };
+  const all=loadAttempts(); all.push(attempt); saveAttempts(all);
+  clearProgress();
+  postToSheet(attempt);
+  renderResults(attempt);
+  show("results");
+}
+
+/* ---------------- results screen ---------------- */
+function renderResults(a){
+  $("#resWho").textContent = `${a.name} · Period ${a.period} · ${a.form}-Test · ${new Date(a.ts).toLocaleString()}`;
+  $("#resPct").textContent=a.pct+"%";
+  $("#resScore").textContent=`${a.score} / ${a.total}`;
+  const lv=levelFor(a.pct);
+  $("#dial").style.setProperty("--deg",(a.pct*3.6)+"deg");
+  $("#dial").style.background=`conic-gradient(${lv.color} var(--deg,0deg), var(--panel2) 0)`;
+  const badge=$("#resLevel"); badge.textContent=lv.name; badge.style.background=lv.color; badge.style.color="#fff";
+  $("#resLevelNote").textContent = "Projected level on this local benchmark (Beginning / Developing / Proficient / Distinguished). Environmental Science has no Georgia Milestones EOC, so this is a classroom projection, not an official state score.";
+  $("#domList").innerHTML = DOMORDER.map(d=>{
+    const o=a.domains[d], c=pctColor(o.pct);
+    return `<div class="dombar">
+      <div class="lab"><span>${d} &middot; ${esc(STANDARDS[d])}</span><span>${o.c}/${o.t} &middot; ${o.pct}%</span></div>
+      <div class="track"><div class="fill" style="width:${o.pct}%;background:${c}"></div></div>
+    </div>`;
+  }).join("");
+}
+$("#doneBtn").addEventListener("click",()=>{ resetStart(); show("start"); });
+function resetStart(){ $("#sName").value=""; $("#sPeriod").value=""; $$('input[name=form]').forEach(r=>r.checked=false); $$("#formPick label").forEach(l=>l.classList.remove("on")); RUN=null; }
+
+/* ============================================================
+   GOOGLE SHEET LOGGING (optional, fails gracefully)
+   ============================================================ */
+function postToSheet(a){
+  const url=getEndpoint();
+  const box=$("#postSubmitNote");
+  if(!url){ box.innerHTML='<p class="note">✅ Saved on this device. (Class-wide Google Sheet logging is not configured &mdash; that is optional.)</p>'; return; }
+  const payload={
+    secret:CONFIG.secret, ts:a.ts, name:a.name, period:a.period, form:a.form,
+    score:a.score, total:a.total, pct:a.pct, level:a.level,
+    domains:a.domains, answers:a.answers
+  };
+  box.innerHTML='<p class="note">✅ Saved on this device. Sending to class record…</p>';
+  fetch(url,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)})
+    .then(()=>{ box.innerHTML='<p class="note">✅ Saved on this device and sent to the class Google Sheet.</p>'; })
+    .catch(()=>{ box.innerHTML='<p class="note">✅ Saved on this device. (Could not reach the Google Sheet right now &mdash; your local copy is safe and can be exported later.)</p>'; });
+}
+
+/* ============================================================
+   TEACHER DASHBOARD
+   ============================================================ */
+$("#teacherBtn").addEventListener("click",()=>{ show("teacher"); $("#teachPanel").classList.add("hidden"); $("#teachLogin").classList.remove("hidden"); $("#teachPass").value=""; $("#teachPass").focus(); });
+$("#teachCancel").addEventListener("click",()=>{ show("start"); });
+$("#teachPass").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#teachEnter").click(); });
+$("#teachEnter").addEventListener("click",()=>{
+  if($("#teachPass").value===CONFIG.passcode){ $("#teachErr").classList.add("hidden"); $("#teachLogin").classList.add("hidden"); $("#teachPanel").classList.remove("hidden"); openTab("overview"); }
+  else { $("#teachErr").classList.remove("hidden"); }
+});
+$("#teachExit").addEventListener("click",()=>{ show("start"); });
+$("#tabBar").addEventListener("click",e=>{ const b=e.target.closest(".tab"); if(!b) return; openTab(b.dataset.tab); });
+function openTab(name){
+  $$("#tabBar .tab").forEach(t=>t.classList.toggle("on",t.dataset.tab===name));
+  const body=$("#tabBody");
+  const data=loadAttempts();
+  if(name==="overview") body.innerHTML=viewOverview(data);
+  else if(name==="mastery") body.innerHTML=viewMastery(data);
+  else if(name==="students") body.innerHTML=viewStudents(data);
+  else if(name==="growth") body.innerHTML=viewGrowth(data);
+  else if(name==="group") body.innerHTML=viewGroup(data);
+  else if(name==="data"){ body.innerHTML=viewData(data); wireData(); }
+}
+
+/* ---- analytics helpers ---- */
+function domTotalsFor(form){
+  const t={}; DOMORDER.forEach(d=>t[d]=0);
+  itemsForForm(form).forEach(q=>t[q.std]++); return t;
+}
+function avg(arr){ return arr.length? arr.reduce((a,b)=>a+b,0)/arr.length : 0; }
+
+function viewOverview(data){
+  if(!data.length) return emptyMsg();
+  const pre=data.filter(a=>a.form==="Pre"), post=data.filter(a=>a.form==="Post");
+  const uniq=new Set(data.map(a=>a.name.toLowerCase()+"|"+a.period)).size;
+  const kpi=(b,s)=>`<div class="kpi"><b>${b}</b><span>${s}</span></div>`;
+  let html=`<div class="kpis">
+    ${kpi(data.length,"attempts recorded")}
+    ${kpi(uniq,"unique students")}
+    ${kpi(pre.length,"pre-tests")}
+    ${kpi(post.length,"post-tests")}
+    ${kpi((pre.length?Math.round(avg(pre.map(a=>a.pct))):0)+"%","avg pre score")}
+    ${kpi((post.length?Math.round(avg(post.map(a=>a.pct))):0)+"%","avg post score")}
+  </div>`;
+  // level distribution
+  const levels=["Beginning","Developing","Proficient","Distinguished"];
+  function dist(set){ const c={}; levels.forEach(l=>c[l]=0); set.forEach(a=>c[a.level]++); return c; }
+  function distRow(label,set){
+    if(!set.length) return `<tr><td>${label}</td><td colspan="4" class="note">no attempts</td></tr>`;
+    const c=dist(set);
+    return `<tr><td><b>${label}</b></td>`+levels.map(l=>`<td>${c[l]} <span class="note">(${Math.round(c[l]/set.length*100)}%)</span></td>`).join("")+`</tr>`;
+  }
+  html+=`<h3>Projected achievement levels</h3><div class="tablewrap"><table>
+    <tr><th>Group</th>${levels.map(l=>`<th>${l}</th>`).join("")}</tr>
+    ${distRow("Pre-Test",pre)}${distRow("Post-Test",post)}</table></div>`;
+  html+=`<p class="note">Averages are across all recorded attempts on this device. Import CSVs from other devices in the Data tab to combine your whole class.</p>`;
+  return html;
+}
+
+function masteryMatrix(data){
+  // per standard: {form: {c,t}}
+  const m={}; DOMORDER.forEach(d=>m[d]={Pre:{c:0,t:0},Post:{c:0,t:0}});
+  data.forEach(a=>{ DOMORDER.forEach(d=>{ if(a.domains&&a.domains[d]){ m[d][a.form].c+=a.domains[d].c; m[d][a.form].t+=a.domains[d].t; } }); });
+  return m;
+}
+function viewMastery(data){
+  if(!data.length) return emptyMsg();
+  const m=masteryMatrix(data);
+  function cell(o){ if(!o.t) return `<td class="note">&mdash;</td>`; const p=Math.round(o.c/o.t*100); return `<td class="h" style="background:${pctColor(p)}">${p}%</td>`; }
+  let rows=DOMORDER.map(d=>`<tr><td><b>${d}</b> <span class="note">${esc(STANDARDS[d])}</span></td>${cell(m[d].Pre)}${cell(m[d].Post)}</tr>`).join("");
+  // element-level heatmap
+  const els={}; Object.keys(ELEMENTS).forEach(k=>els[k]={Pre:{c:0,t:0},Post:{c:0,t:0}});
+  const keyed={}; QUESTIONS.forEach(q=>keyed[q.id]=q);
+  data.forEach(a=>{ Object.keys(a.answers||{}).forEach(qid=>{ const q=keyed[qid]; if(!q) return; const ec=q.std+q.el; if(!els[ec]) return; els[ec][a.form].t++; if(a.answers[qid]===KEY[qid]) els[ec][a.form].c++; }); });
+  let erows=Object.keys(ELEMENTS).map(ec=>`<tr><td><b>${ec}</b> <span class="note">${esc(ELEMENTS[ec])}</span></td>${cell(els[ec].Pre)}${cell(els[ec].Post)}</tr>`).join("");
+  return `<h3>Mastery by standard (% correct)</h3>
+    <div class="tablewrap heat"><table><tr><th>Standard</th><th>Pre-Test</th><th>Post-Test</th></tr>${rows}</table></div>
+    <h3 style="margin-top:20px">Mastery by element</h3>
+    <div class="tablewrap heat"><table><tr><th>Element</th><th>Pre-Test</th><th>Post-Test</th></tr>${erows}</table></div>
+    <p class="note">Green &ge;80% &middot; light green 65&ndash;79% &middot; amber 50&ndash;64% &middot; orange 35&ndash;49% &middot; red &lt;35%.</p>`;
+}
+
+function viewStudents(data){
+  if(!data.length) return emptyMsg();
+  const rows=data.slice().sort((a,b)=> (a.name.toLowerCase()<b.name.toLowerCase()?-1:1) || 0).map(a=>{
+    const doms=DOMORDER.map(d=>{ const o=a.domains[d]; const p=o?o.pct:0; return `<td class="h" style="background:${pctColor(p)}">${p}%</td>`; }).join("");
+    return `<tr><td>${esc(a.name)}</td><td>${esc(a.period)}</td><td>${a.form}</td><td><b>${a.pct}%</b> (${a.score}/${a.total})</td><td>${a.level}</td>${doms}</tr>`;
+  }).join("");
+  return `<h3>Per-student attempts</h3><div class="tablewrap heat"><table>
+    <tr><th>Name</th><th>Per.</th><th>Form</th><th>Score</th><th>Level</th>${DOMORDER.map(d=>`<th>${d}</th>`).join("")}</tr>
+    ${rows}</table></div>`;
+}
+
+function pairStudents(data){
+  const map={};
+  data.forEach(a=>{ const k=a.name.toLowerCase().trim()+"|"+a.period.toLowerCase().trim(); (map[k]=map[k]||{name:a.name,period:a.period}); const slot=a.form; if(!map[k][slot] || a.ts>map[k][slot].ts) map[k][slot]=a; });
+  return Object.values(map);
+}
+function viewGrowth(data){
+  if(!data.length) return emptyMsg();
+  const pairs=pairStudents(data).filter(p=>p.Pre&&p.Post);
+  if(!pairs.length) return `<p class="note">No students yet have <b>both</b> a Pre-Test and a Post-Test on this device. Growth appears once matching pre/post attempts exist (match is by name + period). Import other devices&rsquo; CSVs in the Data tab to complete pairs.</p>`;
+  function d(n){ const s=n>0?"+":""; const cls=n>0?"delta-pos":(n<0?"delta-neg":""); return `<span class="${cls}">${s}${n}</span>`; }
+  const rows=pairs.map(p=>{
+    const overall=p.Post.pct-p.Pre.pct;
+    const doms=DOMORDER.map(dm=>{ const pre=p.Pre.domains[dm]?p.Pre.domains[dm].pct:0, po=p.Post.domains[dm]?p.Post.domains[dm].pct:0; return `<td>${d(po-pre)}</td>`; }).join("");
+    return `<tr><td>${esc(p.name)}</td><td>${esc(p.period)}</td><td>${p.Pre.pct}%</td><td>${p.Post.pct}%</td><td><b>${d(overall)}</b></td>${doms}</tr>`;
+  }).join("");
+  const avgGrowth=Math.round(avg(pairs.map(p=>p.Post.pct-p.Pre.pct)));
+  return `<div class="kpis"><div class="kpi"><b>${avgGrowth>0?"+":""}${avgGrowth}%</b><span>average growth (pre &rarr; post)</span></div><div class="kpi"><b>${pairs.length}</b><span>students with matched pre + post</span></div></div>
+    <div class="tablewrap"><table>
+    <tr><th>Name</th><th>Per.</th><th>Pre</th><th>Post</th><th>&Delta; Overall</th>${DOMORDER.map(dm=>`<th>&Delta; ${dm}</th>`).join("")}</tr>
+    ${rows}</table></div>`;
+}
+
+function viewGroup(data){
+  if(!data.length) return emptyMsg();
+  // use most recent attempt per student per form; default to Post if present else Pre
+  const pairs=pairStudents(data);
+  const CUT=50;
+  let blocks=DOMORDER.map(dm=>{
+    const below=pairs.map(p=>{ const a=p.Post||p.Pre; const o=a.domains[dm]; return {name:p.name,period:p.period,form:a.form,pct:o?o.pct:0}; })
+      .filter(x=>x.pct<CUT).sort((a,b)=>a.pct-b.pct);
+    const list = below.length? below.map(x=>`<li>${esc(x.name)} <span class="note">(P${esc(x.period)}, ${x.form}, ${x.pct}%)</span></li>`).join("") : `<li class="note">No students below ${CUT}% — nice!</li>`;
+    return `<div class="card" style="margin:10px 0"><h3 style="margin-top:0">${dm} &middot; ${esc(STANDARDS[dm])}</h3><ul>${list}</ul></div>`;
+  }).join("");
+  const overallBelow=pairs.map(p=>{const a=p.Post||p.Pre; return {name:p.name,period:p.period,form:a.form,pct:a.pct};}).filter(x=>x.pct<CUT).sort((a,b)=>a.pct-b.pct);
+  const ol=overallBelow.length?overallBelow.map(x=>`<li>${esc(x.name)} <span class="note">(P${esc(x.period)}, ${x.form}, ${x.pct}%)</span></li>`).join(""):`<li class="note">No students below ${CUT}% overall.</li>`;
+  return `<p class="note">Auto-generated reteach lists: students scoring below <b>${CUT}%</b> on each domain (most recent attempt used; Post-Test preferred). Use these to form small groups.</p>
+    <div class="card" style="margin:10px 0"><h3 style="margin-top:0">Overall below ${CUT}%</h3><ul>${ol}</ul></div>${blocks}`;
+}
+
+function emptyMsg(){ return `<p class="note">No attempts recorded on this device yet. Once students submit &mdash; or once you import a CSV in the Data tab &mdash; class analytics appear here.</p>`; }
+
+/* ---------------- DATA tab ---------------- */
+function viewData(data){
+  const url=getEndpoint();
+  return `
+  <h3>Combine devices with CSV</h3>
+  <p class="note">Each attempt auto-saves in this browser. To combine data across student devices or class sets, export a CSV from each device and import them together on one &ldquo;master&rdquo; device.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 6px">
+    <button class="btn" id="csvExport" type="button">&#8681; Export CSV (${data.length})</button>
+    <label class="btn secondary" style="display:inline-flex;align-items:center;margin:0">&#8679; Import CSV<input type="file" id="csvImport" accept=".csv" class="sr-only"></label>
+    <button class="btn ghost" id="csvClear" type="button">Delete all local data</button>
+  </div>
+  <div id="dataMsg" class="note"></div>
+
+  <h3 style="margin-top:22px">Google Sheet logging (optional)</h3>
+  <p class="note">Paste your Google Apps Script Web App URL to have every submission automatically added to your private Google Sheet. If this is blank or unreachable, local save + CSV still work.</p>
+  <label class="fld"><span>Apps Script Web App URL (SHEET_ENDPOINT)</span>
+    <input type="url" id="endpointInput" placeholder="https://script.google.com/macros/s/AKfyc.../exec" value="${esc(url)}"></label>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <button class="btn" id="endpointSave" type="button">Save endpoint</button>
+    <button class="btn secondary" id="endpointTest" type="button">Send test row</button>
+  </div>
+  <p class="note" style="margin-top:6px">Shared secret currently set in this page: <code>${esc(CONFIG.secret)}</code> (must match the <code>SECRET</code> in your Apps Script).</p>
+
+  <h3 style="margin-top:22px">Apps Script code (paste into your Sheet)</h3>
+  <p class="note"><b>Extensions &rarr; Apps Script</b> in your Google Sheet, delete any code, paste the code below, then <b>Deploy &rarr; New deployment &rarr; Web app</b> with <b>Execute as: Me</b> and <b>Who has access: Anyone</b>. Copy the resulting <code>/exec</code> URL into the box above.</p>
+  <p class="note">&#128274; <b>Privacy:</b> &ldquo;Who has access: Anyone&rdquo; only controls who may <i>submit</i> a row to the link. It does <b>not</b> share or expose your spreadsheet &mdash; the Sheet itself stays private to your Google account.</p>
+  <div class="codebox">
+    <button class="btn secondary copybtn" id="copyCode" type="button">Copy</button>
+    <pre id="gsCode">${esc(CONFIG.appsScript)}</pre>
+  </div>`;
+}
+function wireData(){
+  const msg=$("#dataMsg");
+  $("#csvExport").addEventListener("click",()=>{
+    const csv=attemptsToCSV(loadAttempts());
+    const blob=new Blob([csv],{type:"text/csv"}); const u=URL.createObjectURL(blob);
+    const a=document.createElement("a"); a.href=u; a.download="envsci_benchmark_data.csv"; a.click(); URL.revokeObjectURL(u);
+  });
+  $("#csvImport").addEventListener("change",ev=>{
+    const f=ev.target.files[0]; if(!f) return; const rd=new FileReader();
+    rd.onload=()=>{ try{ const added=importCSV(rd.result); msg.textContent=`Imported ${added} attempt(s). Re-open a tab to refresh.`; openTab("data"); }catch(e){ msg.textContent="Import failed: "+e.message; } };
+    rd.readAsText(f);
+  });
+  $("#csvClear").addEventListener("click",()=>{ if(confirm("Delete ALL locally stored attempts on this device? Export a CSV first if you want a backup.")){ saveAttempts([]); openTab("data"); } });
+  $("#endpointSave").addEventListener("click",()=>{ const v=$("#endpointInput").value.trim(); if(v) localStorage.setItem(LS.endpoint,v); else localStorage.removeItem(LS.endpoint); msg.textContent="Endpoint saved on this device."; });
+  $("#endpointTest").addEventListener("click",()=>{
+    const url=$("#endpointInput").value.trim()||getEndpoint(); if(!url){ msg.textContent="Enter an endpoint URL first."; return; }
+    const payload={secret:CONFIG.secret,ts:new Date().toISOString(),name:"TEST ROW",period:"0",form:"Pre",score:0,total:40,pct:0,level:"Beginning",domains:{},answers:{}};
+    fetch(url,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)})
+      .then(()=>{ msg.textContent="Test row sent. Check your Google Sheet for a 'TEST ROW' entry."; })
+      .catch(()=>{ msg.textContent="Could not reach the endpoint (check the URL and deployment)."; });
+  });
+  $("#copyCode").addEventListener("click",()=>{ navigator.clipboard.writeText(CONFIG.appsScript).then(()=>{ $("#copyCode").textContent="Copied ✓"; setTimeout(()=>$("#copyCode").textContent="Copy",1500); }); });
+}
+
+/* ---------------- CSV ---------------- */
+const CSV_COLS=["id","ts","name","period","form","score","total","pct","level","SEV1","SEV2","SEV3","SEV4","SEV5","answers"];
+function attemptsToCSV(list){
+  const esc=v=>{ v=v==null?"":String(v); return /[",\n]/.test(v)? '"'+v.replace(/"/g,'""')+'"' : v; };
+  const lines=[CSV_COLS.join(",")];
+  list.forEach(a=>{
+    const row=[a.id,a.ts,a.name,a.period,a.form,a.score,a.total,a.pct,a.level,
+      a.domains.SEV1?a.domains.SEV1.pct:"",a.domains.SEV2?a.domains.SEV2.pct:"",a.domains.SEV3?a.domains.SEV3.pct:"",a.domains.SEV4?a.domains.SEV4.pct:"",a.domains.SEV5?a.domains.SEV5.pct:"",
+      JSON.stringify(a.answers||{})];
+    lines.push(row.map(esc).join(","));
+  });
+  return lines.join("\n");
+}
+function parseCSV(text){
+  const rows=[]; let row=[],cur="",q=false;
+  for(let i=0;i<text.length;i++){ const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=c; }
+    else { if(c==='"') q=true; else if(c===","){ row.push(cur); cur=""; } else if(c==="\n"){ row.push(cur); rows.push(row); row=[]; cur=""; } else if(c==="\r"){} else cur+=c; }
+  }
+  if(cur.length||row.length){ row.push(cur); rows.push(row); }
+  return rows.filter(r=>r.length>1||r[0]!=="");
+}
+function importCSV(text){
+  const rows=parseCSV(text); if(!rows.length) return 0;
+  const head=rows[0].map(h=>h.trim());
+  const idx=n=>head.indexOf(n);
+  const all=loadAttempts(); const seen=new Set(all.map(a=>a.id)); let added=0;
+  for(let i=1;i<rows.length;i++){ const r=rows[i]; if(!r || !r[idx("id")]) continue;
+    const id=r[idx("id")]; if(seen.has(id)) continue;
+    let answers={}; try{ answers=JSON.parse(r[idx("answers")]||"{}"); }catch(e){}
+    // recompute domains from answers so imported rows are fully consistent
+    const form=r[idx("form")];
+    const run={items:itemsForForm(form==="Post"?"Post":"Pre"),answers};
+    const sc=scoreRun(run);
+    const a={ id, ts:r[idx("ts")]||new Date().toISOString(), name:r[idx("name")]||"", period:r[idx("period")]||"", form,
+      answers, score:sc.score, total:sc.total, pct:sc.pct, level:sc.level, domains:sc.domains };
+    all.push(a); seen.add(id); added++;
+  }
+  saveAttempts(all); return added;
+}
+
+/* ---------------- boot ---------------- */
+show("start");
+console.log("Env Sci Benchmark ready — "+QUESTIONS.length+" items loaded across Form A/B.");
+</script>
+</body>
+</html>
