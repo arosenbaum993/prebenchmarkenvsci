@@ -1,68 +1,84 @@
-# Environmental Science — Semester Pre/Post Diagnostic
+# Environmental Science Semester Benchmark (Pre / Post)
 
-A standards-aligned, online, auto-scoring diagnostic for **9th-grade Environmental
-Science** (Georgia course **26.06110**, standards **SEV1–SEV5**). Built to guide
-instruction across an 18-week semester and to measure learning at the end.
+A self-contained, offline-capable, standards-aligned **multiple-choice benchmark** for
+**Environmental Science, Grade 10**, built on the **Georgia Standards of Excellence**
+(course **26.06110**, standards **SEV1–SEV5**).
 
-- **40 multiple-choice items per form**, two **parallel forms**:
-  - **Form A = Pre-Test** (Week 1 diagnostic — plan the semester)
-  - **Form B = Post-Test** (semester end — measure growth on identical targets)
-- **Every item is tagged** to a standard *and* element, so subscores are meaningful.
-- **Diagnostic distractors:** most wrong answers are keyed to a *documented* student
-  misconception from the GaDOE Environmental Science Teacher Notes ("potential initial
-  student ideas"), so the report tells you **what to reteach and to whom** — not just a score.
+Everything lives in one file — **`index.html`** — with no external libraries or CDNs.
+It works offline, supports light + dark themes, is keyboard-accessible, and is mobile-friendly.
 
-## Live link
-
-Once GitHub Pages is enabled (Settings → Pages → Deploy from `main`, folder `/root`),
-the test is available at:
-
-**https://arosenbaum993.github.io/prebenchmarkenvsci/**
-
-## What's here
-
-| File | What it is |
-|---|---|
-| **`index.html`** | Same as `assessment.html`; lets the GitHub Pages / host site root open the test directly. |
-| **`assessment.html`** | The complete, self-contained online test. Open in any browser or upload to Google Sites / an LMS. Auto-scores, shows a per-standard diagnostic report, exports results, and includes teacher tools (answer key + **class data analyzer**). No internet, accounts, or plugins required. |
-| **`TEACHER_GUIDE.md`** | Answer key, standards/element alignment, mastery bands, the full **misconception map**, and how to turn pre-test data into a semester plan and reteaching groups. |
-| **`GOOGLE_SHEET_SETUP.md`** | Step-by-step setup for **automatic** result collection into your own Google Sheet (no result codes). |
-| **`apps_script/Code.gs`** | The Google Apps Script that receives results and writes them to your Sheet. |
-| **`ITEM_BANK.md`** | Clean printable copy of both forms (for paper use or importing into Google Forms). |
-| **`data/items.json`** | Machine-readable item bank. |
-| **`build/items.py`** | **Single source of truth** — all 80 items with alignment + misconception keys. |
-| **`build/build.py`** | Regenerates every deliverable from `items.py`. |
-
-## Using it with a class
-
-**Automatic (recommended) — results flow into your Google Sheet:**
-1. Do the one-time setup in [`GOOGLE_SHEET_SETUP.md`](GOOGLE_SHEET_SETUP.md) (~5 min), or **Teacher tools → Set up automatic collection** inside the test.
-2. Share the generated **student link** in Google Classroom (Form A for the pre-test, Form B for the post-test).
-3. Students take the test; every submission logs to your Sheet automatically — no codes.
-4. Open **Teacher tools → Class data analyzer → Load class data from Google Sheet** for the heatmap, reteaching groups, item analysis, and misconception frequencies.
-
-**No-setup fallback — result codes:**
-1. Assign **Form A** (pre-test) in Week 1. Students enter their name/class and answer online.
-2. Each student gets a short **result code** (`ENV-…`). Collect the codes (LMS, a form, or a shared doc).
-3. Open **Teacher tools → Class data analyzer**, paste the codes, and get the same class report.
-
-At semester end, assign **Form B** and compare the same element subscores to show growth.
-
-**Mastery bands:** Secure ≥ 80% · Developing 50–79% · Beginning < 50%.
-
-## Rebuilding
-
-Editing questions? Change `build/items.py`, then:
-
-```bash
-cd build && python3 build.py
-```
-
-This re-validates the bank (balanced parallel forms, valid keys) and regenerates
-`assessment.html`, `TEACHER_GUIDE.md`, `ITEM_BANK.md`, and `data/items.json`.
+**▶ Live student link (after Pages is enabled — see below):**
+`https://arosenbaum993.github.io/prebenchmarkenvsci/`
 
 ---
 
-*Aligned to the Science Georgia Standards of Excellence for Environmental Science
-(26.06110), the GaDOE Environmental Science Teacher Notes, and the GaDOE High School
-Environmental Science Curriculum Map.*
+## What students see
+
+- A start screen: **name + class period**, then a choice of **Pre-Test (Form A)** or **Post-Test (Form B)**.
+- **One question per screen** with a progress bar, **Flag-for-review**, a **question-navigator grid**,
+  free back/forward movement, and answers that can be changed until submit.
+- On submit: an **auto-scored** result with a **projected achievement level** and a **per-domain breakdown** (SEV1–SEV5).
+  Students **do not** see which answers were correct.
+- Attempts auto-save in the browser so a student can resume if a page is refreshed.
+
+## What teachers see
+
+Click **🔒 Teacher** (top right) and enter the passcode. The dashboard has six tabs:
+
+| Tab | What it shows |
+|---|---|
+| **Class overview** | Attempt counts, pre/post averages, projected-level distribution |
+| **Standard mastery** | Color-coded **% correct heatmap** per standard *and* per element (Pre vs Post) |
+| **Students** | Per-student score, level, and per-domain breakdown |
+| **Growth** | Pre → Post deltas (overall and per domain), matched by name + period |
+| **Grouping & reteach** | Auto-generated lists of students **below 50%** on each domain |
+| **Data** | CSV export/import, Google Sheet endpoint, and the copy-paste Apps Script code |
+
+> The teacher passcode is **not** printed in this public README. It is delivered privately
+> with the teacher materials. You can change it in `index.html` (`CONFIG.passcode`).
+
+## Data & combining devices
+
+- Every submission is stored locally in the browser (`localStorage`).
+- The **Data** tab can **export a CSV** from any device and **import CSVs** on one “master”
+  device to combine a whole class.
+- **Optional Google Sheet logging:** paste a Google Apps Script Web App URL into the Data tab and
+  each submission is also posted to your private Google Sheet. If the endpoint is unset or
+  unreachable, local save + CSV still work — nothing breaks.
+
+---
+
+## One-time GitHub Pages setup
+
+1. Merge the pull request (or push) so **`index.html`** is on the `main` branch.
+2. In this repo, go to **Settings → Pages**.
+3. Under **Build and deployment → Source**, choose **Deploy from a branch**.
+4. Set **Branch = `main`** and **Folder = `/ (root)`**, then **Save**.
+5. Wait ~1 minute. Your test is live at:
+   **`https://arosenbaum993.github.io/prebenchmarkenvsci/`**
+
+A `.nojekyll` file is included so GitHub Pages serves the file as-is.
+
+## Optional: Google Sheet logging setup
+
+1. Create a Google Sheet (it stays **private to your account**).
+2. **Extensions → Apps Script**, delete any code, and paste the code from **`apps_script/Code.gs`**
+   (also shown, with a **Copy** button, in the benchmark’s **Data** tab).
+3. **Deploy → New deployment → Web app**, with **Execute as: Me** and **Who has access: Anyone**.
+4. Copy the resulting `/exec` URL into the **Data** tab’s *SHEET_ENDPOINT* box (or set `CONFIG.endpoint` in `index.html`).
+
+> 🔐 **Privacy:** *“Who has access: Anyone”* only controls who may **submit** a row to the link.
+> It does **not** expose or share your spreadsheet — the Sheet itself stays private to your Google
+> account. A shared `SECRET` in the page must match the `SECRET` in the script, so only this test can add rows.
+
+---
+
+## Security notes (public repo)
+
+- The correct-answer key is **obfuscated** and decoded at run time — **View Source does not reveal answers**.
+- There is **no answer-key tab** in the student-facing file.
+- The teacher guide and the raw item bank (which contain answers) are **kept out of this public repo**
+  and delivered separately.
+
+*Built as a classroom pre/post benchmark tool. It is aligned to the GSE and GaDOE Environmental Science
+Curriculum Map but is **not** an official Georgia Milestones assessment (Environmental Science has no EOC).*

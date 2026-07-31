@@ -1,3 +1,10 @@
+# Build tooling and answer-bearing materials must NEVER enter this public repo.
 __pycache__/
 *.pyc
-build/artifact_body.html
+build/
+data/
+# Private teacher materials (answers, DOK, misconceptions) — delivered separately:
+TEACHER_GUIDE.md
+ITEM_BANK.md
+ANSWER_KEY.md
+items_source.json

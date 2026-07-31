@@ -1,76 +1,38 @@
-/**
- * Environmental Science Diagnostic — class results collector.
- *
- * Paste this into the Apps Script editor of a Google Sheet
- * (Extensions -> Apps Script), then deploy it as a Web app
- * ("Execute as: Me", "Who has access: Anyone").  See GOOGLE_SHEET_SETUP.md
- * for the full click-by-click walkthrough.
- *
- * The test PostS each student's results here (one row per submission).
- * The class analyzer reads them back with a JSONP GET, so no student ever
- * copies or pastes a code.
- */
-
-var SHEET_NAME = 'Responses';
+// Environmental Science Benchmark -- Google Sheet logger (doPost)
+// 1) In your Google Sheet: Extensions > Apps Script. Delete any code, paste this.
+// 2) Deploy > New deployment > Web app.
+//      Execute as: Me      Who has access: Anyone
+// 3) Copy the /exec URL into the benchmark's Data tab (SHEET_ENDPOINT).
+// The SECRET below must match the SECRET shown in the benchmark's Data tab.
+var SECRET = "sev2606-arbench-2026";
 
 function doPost(e) {
-  var lock = LockService.getScriptLock();
-  lock.waitLock(30000); // avoid two submissions writing at once
   try {
     var data = JSON.parse(e.postData.contents);
-    var sheet = getSheet_();
-    sheet.appendRow([
-      new Date(),
-      data.f || '',                 // form (A = pre, B = post)
-      data.n || '',                 // student name
-      data.c || '',                 // class / period
-      data.i || '',                 // student id (optional)
-      JSON.stringify(data.a || {})  // answers: {itemId: selectedIndex, ...} (-1 = blank)
-    ]);
-    return json_({ ok: true });
+    if (data.secret !== SECRET) {
+      return ContentService.createTextOutput(JSON.stringify({ok:false, error:"bad secret"}))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sh = ss.getSheetByName("Responses") || ss.insertSheet("Responses");
+    if (sh.getLastRow() === 0) {
+      sh.appendRow(["Timestamp","Name","Period","Form","Score","Total","Percent","Level",
+                    "SEV1 %","SEV2 %","SEV3 %","SEV4 %","SEV5 %","Answers (JSON)"]);
+    }
+    var d = data.domains || {};
+    function p(x){ return (x && typeof x.pct === "number") ? x.pct : ""; }
+    sh.appendRow([data.ts || new Date(), data.name || "", data.period || "", data.form || "",
+                  data.score || 0, data.total || 0, data.pct || 0, data.level || "",
+                  p(d.SEV1), p(d.SEV2), p(d.SEV3), p(d.SEV4), p(d.SEV5),
+                  JSON.stringify(data.answers || {})]);
+    return ContentService.createTextOutput(JSON.stringify({ok:true}))
+      .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
-    return json_({ ok: false, error: String(err) });
-  } finally {
-    lock.releaseLock();
+    return ContentService.createTextOutput(JSON.stringify({ok:false, error:String(err)}))
+      .setMimeType(ContentService.MimeType.JSON);
   }
 }
 
-function doGet(e) {
-  var sheet = getSheet_();
-  var values = sheet.getDataRange().getValues();
-  var rows = [];
-  for (var i = 1; i < values.length; i++) { // row 0 is the header
-    var r = values[i];
-    if (!r[1] && !r[2]) continue;            // skip blank rows
-    rows.push({ ts: r[0], f: r[1], n: r[2], c: r[3], i: r[4], a: safeParse_(r[5]) });
-  }
-  var payload = JSON.stringify({ ok: true, count: rows.length, rows: rows });
-  var cb = e && e.parameter && e.parameter.callback;
-  if (cb) {
-    // JSONP: lets the analyzer read cross-origin without a CORS error.
-    return ContentService.createTextOutput(cb + '(' + payload + ')')
-      .setMimeType(ContentService.MimeType.JAVASCRIPT);
-  }
-  return ContentService.createTextOutput(payload)
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-function getSheet_() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sh = ss.getSheetByName(SHEET_NAME);
-  if (!sh) {
-    sh = ss.insertSheet(SHEET_NAME);
-    sh.appendRow(['Timestamp', 'Form', 'Name', 'Class', 'StudentID', 'Answers']);
-    sh.setFrozenRows(1);
-  }
-  return sh;
-}
-
-function json_(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-function safeParse_(s) {
-  try { return JSON.parse(s); } catch (e) { return {}; }
+function doGet() {
+  return ContentService.createTextOutput("Environmental Science benchmark endpoint is live.");
 }
